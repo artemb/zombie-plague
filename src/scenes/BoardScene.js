@@ -25,11 +25,16 @@ export default class BoardScene extends Phaser.Scene {
 
     preload () {
         this.load.image('board', 'assets/board.png')
-        this.load.image('zombie', 'assets/characters/zombies/male/idle (1).png', )
+        this.load.image('zombie', 'assets/characters/zombies/male/idle (1).png')
+        this.load.spritesheet('buttons', 'assets/ui/controls.png', {frameWidth: 200, frameHeight: 215})
     }
 
     create () {
         this.add.image(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 'board')
         this.add.image(place_on_grid(1, 1, 'x'), place_on_grid(1, 1, 'y'), 'zombie').setScale(0.08)
+        this.add.sprite(50, 50, 'buttons', 1).setScale(0.3)
+        this.add.sprite(50, 120, 'buttons', 2).setScale(0.3)
+        this.add.sprite(50, 190, 'buttons', 3).setScale(0.3)
+        this.add.sprite(50, 260, 'buttons', 4).setScale(0.3)
     }
 }
