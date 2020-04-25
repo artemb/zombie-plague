@@ -2,31 +2,22 @@ import Phaser from 'phaser'
 
 const GRID_WIDTH = 24
 const GRID_HEIGHT = 24
-const SCREEN_WIDTH = 1400
-const SCREEN_HEIGHT = 752
 const BOARD_WIDTH = 903
-const BOARD_HEIGHT = SCREEN_HEIGHT
+const BOARD_HEIGHT = 752
 const CELL_WIDTH = BOARD_WIDTH / GRID_WIDTH
 const CELL_HEIGHT = BOARD_HEIGHT / GRID_HEIGHT
-
-function place_on_grid(grid_x, grid_y, axis) {
-    const BOARD_X_OFFSET = (SCREEN_WIDTH - BOARD_WIDTH) / 2
-    if (axis == 'x') {
-        return BOARD_X_OFFSET + CELL_WIDTH * grid_x - CELL_WIDTH / 2
-    } else {
-        return CELL_HEIGHT * grid_y - CELL_HEIGHT / 2
-    }
-}
 
 export default class BoardScene extends Phaser.Scene {
     constructor() {
         super('game-scene')
+        
     }
 
     preload () {
         this.load.image('board', 'assets/board.png')
         this.load.image('zombie', 'assets/characters/zombies/male/idle (1).png')
         this.load.spritesheet('buttons', 'assets/ui/controls.png', {frameWidth: 200, frameHeight: 215})
+        console.log(this.game)
     }
 
     create_button(x, y, frame, onPointerDown, onPointerUp) {
@@ -38,8 +29,9 @@ export default class BoardScene extends Phaser.Scene {
     }
 
     create () {
-        this.add.image(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 'board')
-        let zombie = this.add.image(place_on_grid(1, 1, 'x'), place_on_grid(1, 1, 'y'), 'zombie').setScale(0.08)
+        this.add.image(this.game.config.width / 2, this.game.config.height / 2, 'board')
+        let zombie = this.add.image(this.place_on_grid(1, 1, 'x'), 
+            this.place_on_grid(1, 1, 'y'), 'zombie').setScale(0.08)
 
         function move_callback(x, y) {
             return function (pointer) {
@@ -57,5 +49,14 @@ export default class BoardScene extends Phaser.Scene {
         let right_btn = this.create_button(120, 50, 4, move_callback(1, 0), btn_up)
         let fwd_btn = this.create_button(50, 120, 2, move_callback(0, -1), btn_up)
         let bwd_btn = this.create_button(120, 120, 3, move_callback(0, 1), btn_up)
+    }
+
+    place_on_grid(grid_x, grid_y, axis) {
+        const BOARD_X_OFFSET = (this.game.config.width - BOARD_WIDTH) / 2
+        if (axis == 'x') {
+            return BOARD_X_OFFSET + CELL_WIDTH * grid_x - CELL_WIDTH / 2
+        } else {
+            return CELL_HEIGHT * grid_y - CELL_HEIGHT / 2
+        }
     }
 }
