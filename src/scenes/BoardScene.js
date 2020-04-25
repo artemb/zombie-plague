@@ -32,9 +32,23 @@ export default class BoardScene extends Phaser.Scene {
     create () {
         this.add.image(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 'board')
         this.add.image(place_on_grid(1, 1, 'x'), place_on_grid(1, 1, 'y'), 'zombie').setScale(0.08)
-        this.add.sprite(50, 50, 'buttons', 1).setScale(0.3)
-        this.add.sprite(50, 120, 'buttons', 2).setScale(0.3)
-        this.add.sprite(50, 190, 'buttons', 3).setScale(0.3)
-        this.add.sprite(50, 260, 'buttons', 4).setScale(0.3)
+        let btn_left = this.add.sprite(50, 50, 'buttons', 1).setScale(0.3).setInteractive();
+        let btn_forward = this.add.sprite(50, 120, 'buttons', 2).setScale(0.3)
+        let btn_backward = this.add.sprite(50, 190, 'buttons', 3).setScale(0.3)
+        let btn_right = this.add.sprite(50, 260, 'buttons', 4).setScale(0.3)
+        
+        btn_left.on('pointerdown', function (pointer) {
+            this.setTint(0xFF0000);
+        })
+
+        btn_left.on('pointerup', function (pointer) {
+            this.clearTint();
+        })
+
+        btn_left.on('pointerout', function(pointer) {
+            this.clearTint();
+        })
+
+        
     }
 }
