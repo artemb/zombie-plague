@@ -5,14 +5,9 @@ import BoardScene from './scenes/BoardScene'
 
 const config = {
 	type: Phaser.AUTO,
-	width: 800,
-	height: 600,
-	physics: {
-		default: 'arcade',
-		arcade: {
-			gravity: { y: 300 }
-		}
-	},
+	width: 1400,
+	height: 752,
+	physics: {},
 	scene: [BoardScene]
 }
 
