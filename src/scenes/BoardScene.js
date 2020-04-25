@@ -29,26 +29,29 @@ export default class BoardScene extends Phaser.Scene {
         this.load.spritesheet('buttons', 'assets/ui/controls.png', {frameWidth: 200, frameHeight: 215})
     }
 
+    create_button(x, y, frame, onPointerDown, onPointerUp) {
+        let btn = this.add.sprite(x, y, 'buttons', frame).setScale(0.3).setInteractive();
+        btn.on('pointerdown', onPointerDown)
+        btn.on('pointerup', onPointerUp)
+        btn.on('pointerout', onPointerUp)
+        return btn
+    }
+
     create () {
         this.add.image(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 'board')
         this.add.image(place_on_grid(1, 1, 'x'), place_on_grid(1, 1, 'y'), 'zombie').setScale(0.08)
-        let btn_left = this.add.sprite(50, 50, 'buttons', 1).setScale(0.3).setInteractive();
-        let btn_forward = this.add.sprite(50, 120, 'buttons', 2).setScale(0.3)
-        let btn_backward = this.add.sprite(50, 190, 'buttons', 3).setScale(0.3)
-        let btn_right = this.add.sprite(50, 260, 'buttons', 4).setScale(0.3)
-        
-        btn_left.on('pointerdown', function (pointer) {
-            this.setTint(0xFF0000);
-        })
 
-        btn_left.on('pointerup', function (pointer) {
-            this.clearTint();
-        })
+        function btn_down(pointer) {
+            this.setTint(0xFF0000)
+        }
 
-        btn_left.on('pointerout', function(pointer) {
-            this.clearTint();
-        })
+        function btn_up(pointer) {
+            this.clearTint()
+        }
 
-        
+        let left_btn = this.create_button(50, 50, 1, btn_down, btn_up)
+        let right_btn = this.create_button(120, 50, 4, btn_down, btn_up)
+        let fwd_btn = this.create_button(50, 120, 2, btn_down, btn_up)
+        let bwd_btn = this.create_button(120, 120, 3, btn_down, btn_up)
     }
 }
