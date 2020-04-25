@@ -39,19 +39,23 @@ export default class BoardScene extends Phaser.Scene {
 
     create () {
         this.add.image(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 'board')
-        this.add.image(place_on_grid(1, 1, 'x'), place_on_grid(1, 1, 'y'), 'zombie').setScale(0.08)
+        let zombie = this.add.image(place_on_grid(1, 1, 'x'), place_on_grid(1, 1, 'y'), 'zombie').setScale(0.08)
 
-        function btn_down(pointer) {
-            this.setTint(0xFF0000)
+        function move_callback(x, y) {
+            return function (pointer) {
+                this.setTint(0xFF0000)
+                zombie.x += x * CELL_WIDTH;
+                zombie.y += y * CELL_WIDTH;
+            }
         }
 
         function btn_up(pointer) {
             this.clearTint()
         }
 
-        let left_btn = this.create_button(50, 50, 1, btn_down, btn_up)
-        let right_btn = this.create_button(120, 50, 4, btn_down, btn_up)
-        let fwd_btn = this.create_button(50, 120, 2, btn_down, btn_up)
-        let bwd_btn = this.create_button(120, 120, 3, btn_down, btn_up)
+        let left_btn = this.create_button(50, 50, 1, move_callback(-1, 0), btn_up)
+        let right_btn = this.create_button(120, 50, 4, move_callback(1, 0), btn_up)
+        let fwd_btn = this.create_button(50, 120, 2, move_callback(0, -1), btn_up)
+        let bwd_btn = this.create_button(120, 120, 3, move_callback(0, 1), btn_up)
     }
 }
