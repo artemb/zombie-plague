@@ -16,19 +16,16 @@ export default class BoardScene extends Phaser.GameObjects.Container {
     positionOnGrid(object, row, column) {
         object.x = - this.width / 2 + column * CELL_WIDTH - CELL_WIDTH / 2;
         object.y = -this.height / 2 + row * CELL_HEIGHT - CELL_HEIGHT / 2;
-        console.log(object.x, object.y)
         return object;
     }    
 
     constructor (scene, x, y) {
         super(scene, x, y)
+
         this.setSize(BOARD_WIDTH, BOARD_HEIGHT)
         scene.add.existing(this);
         this.add(scene.add.image(0, 0, 'board'))
-        console.log(this.width)
-        let zombie = scene.add.image(0, 0, 'zombie').setScale(0.08);
-        this.positionOnGrid(zombie, 4, 23)
-        this.add(zombie)
+
     }
 
 

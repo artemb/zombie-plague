@@ -1,5 +1,6 @@
-import Phaser from 'phaser'
+import Phaser, { Tilemaps } from 'phaser'
 import Board from '../components/Board.js'
+import Character from '../components/Character.js'
 
 export default class BoardScene extends Phaser.Scene {
     constructor() {
@@ -23,6 +24,14 @@ export default class BoardScene extends Phaser.Scene {
 
     create () {
         this.board = new Board(this, this.game.config.width - Board.BOARD_WIDTH / 2, this.game.config.height / 2)
+
+        let zombie = new Character(this, 'zombie')
+        this.board.add(zombie)
+        this.board.positionOnGrid(zombie, 4, 4)
+
+        // this.positionOnGrid(zombie, 4, 23)
+        // this.add(zombie)
+
         // this.add.image(this.game.config.width / 2, this.game.config.height / 2, 'board')
         // let zombie = this.board.add.image(20, 20, 'zombie').setScale(0.08)
 
