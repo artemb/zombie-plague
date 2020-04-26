@@ -32,22 +32,22 @@ export default class Character extends Phaser.GameObjects.Sprite {
 
         switch (angle) {
             case 0: {
-                this.rotation = 0;
+                this.angle = 0;
                 this.scaleX = IMAGE_SCALE;
                 break;
             }
             case 90: {
-                this.rotation = 90;
+                this.angle = 90;
                 this.scaleX = IMAGE_SCALE;
                 break;
             }
             case 180: {
-                this.rotation = 0;
+                this.angle = 0;
                 this.scaleX = -IMAGE_SCALE;
                 break;
             }
             case 270: {
-                this.rotation = -90;
+                this.angle = -90;
                 this.scaleX = IMAGE_SCALE;
             }
         }
