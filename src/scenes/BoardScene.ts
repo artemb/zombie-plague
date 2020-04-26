@@ -1,9 +1,12 @@
 import Phaser, { Tilemaps } from 'phaser'
-import Board from '../components/Board.js'
-import Character from '../components/Character.js'
-import Controls from '../components/Controls.js'
+import Board from '../components/Board'
+import Character from '../components/Character'
+import Controls from '../components/Controls'
 
 export default class BoardScene extends Phaser.Scene {
+    board: Board
+    controls: Controls
+    
     constructor() {
         super('game-scene')        
     }
@@ -17,7 +20,7 @@ export default class BoardScene extends Phaser.Scene {
 
 
     create () {
-        this.board = new Board(this, this.game.config.width - Board.BOARD_WIDTH / 2, this.game.config.height / 2)
+        this.board = new Board(this, +this.game.config.width - Board.BOARD_WIDTH / 2, +this.game.config.height / 2)
 
         let zombie = new Character(this, this.board, 'zombie')
         zombie.position(3, 3)

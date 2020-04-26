@@ -1,7 +1,4 @@
 import Phaser from 'phaser'
-
-
-import HelloWorldScene from './scenes/HelloWorldScene'
 import BoardScene from './scenes/BoardScene'
 
 const config = {

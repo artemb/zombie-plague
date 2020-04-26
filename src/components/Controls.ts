@@ -1,11 +1,14 @@
 import Phaser from 'phaser'
-import Board from './Board.js'
+import Board from './Board'
+import Character from './Character'
 
 export default class Controls extends Phaser.GameObjects.Container {
-    constructor(scene, x, y, zombie) {
+    zombie: Character
+
+    constructor(scene:Phaser.Scene, x:integer, y:integer, zombie:Character) {
         super(scene, x, y)
-        this.setSize(scene.game.config.width - Board.BOARD_WIDTH, scene.game.config.height)
-        console.log(scene.game.config.width - Board.BOARD_WIDTH, scene.game.config.height)
+        this.setSize(+scene.game.config.width - Board.BOARD_WIDTH, +scene.game.config.height)
+        console.log(+scene.game.config.width - Board.BOARD_WIDTH, scene.game.config.height)
 
         scene.add.existing(this);
 

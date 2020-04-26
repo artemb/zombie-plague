@@ -1,6 +1,11 @@
 import Phaser from 'phaser'
+import Board from './Board'
 
 export default class Character extends Phaser.GameObjects.Sprite {
+    board: Board;
+    row: number;
+    column: number;
+    _heading: number;
 
     constructor(scene, board, texture) {
         super(scene, 0, 0, texture);
