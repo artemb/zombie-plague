@@ -91,6 +91,13 @@ export default class Character extends Phaser.GameObjects.Sprite {
         let row_step = 0;
         let col_step = 0;
 
+        const facing_cell = this.facing_cell(forward);
+        const current_cell = new Phaser.Math.Vector2(this.row, this.column);
+
+        if (this.board.is_blocked(current_cell, facing_cell)) {
+            return;
+        }
+
         let direction_factor = forward ? 1 : -1;
 
         if (this.heading == 0) {
@@ -106,7 +113,29 @@ export default class Character extends Phaser.GameObjects.Sprite {
         }
 
         
-        this.position(this.row + row_step, this.column + col_step, true);
+        this.position(facing_cell.x, facing_cell.y, true);
+    }
+
+    facing_cell(forward=true):Phaser.Math.Vector2 {
+        const direction_step = forward ? 1 : -1;
+        
+        switch (this.heading) {
+            case 0: {
+                return new Phaser.Math.Vector2(this.row, this.column + direction_step);
+            }
+            case 90: {
+                return new Phaser.Math.Vector2(this.row + direction_step, this.column);
+            }
+            case 180: {
+                return new Phaser.Math.Vector2(this.row, this.column - direction_step);
+            }
+            case 270: {
+                return new Phaser.Math.Vector2(this.row - direction_step, this.column)
+            }
+
+            throw new Error("Unexpected direction");
+        }
+        
     }
 
 }
