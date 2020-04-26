@@ -43,10 +43,24 @@ export default class Character extends Phaser.GameObjects.Sprite {
         this.heading += 90;
     }
 
-    position(row:integer, column:integer) {
+    position(row:integer, column:integer, animate = false) {
         this.row = row;
         this.column = column;
-        this.board.positionOnGrid(this, row, column);
+        let v:Phaser.Math.Vector2 = this.board.getPositionOnGrid(row, column)
+
+        if (animate) {
+            this.scene.tweens.add({
+                targets: this,
+                x: v.x,
+                y: v.y,
+                ease: Phaser.Math.Easing.Quartic,
+                duration: 500,
+                yoyo: false
+            });
+        } else {
+            this.x = v.x;
+            this.y = v.y;
+        }
     }
 
     move_forward() {
@@ -64,7 +78,9 @@ export default class Character extends Phaser.GameObjects.Sprite {
         } else {
             console.error(`Unknown heading: ${this.heading}`);
         }
-        this.position(this.row + row_step, this.column + col_step);
+
+        
+        this.position(this.row + row_step, this.column + col_step, true);
     }
 
 }
