@@ -1,6 +1,8 @@
 import Phaser from 'phaser'
 import Board from './Board'
 
+const IMAGE_SCALE = 0.08;
+
 export default class Character extends Phaser.GameObjects.Sprite {
     board: Board;
     row: number;
@@ -9,7 +11,7 @@ export default class Character extends Phaser.GameObjects.Sprite {
 
     constructor(scene:Phaser.Scene, board:Board, texture:string) {
         super(scene, 0, 0, texture);
-        this.setScale(0.08);
+        this.setScale(IMAGE_SCALE);
         scene.add.existing(this);
 
         this.board = board;
@@ -26,6 +28,28 @@ export default class Character extends Phaser.GameObjects.Sprite {
             angle += 360;
         } else if (angle >= 360) {
             angle -= 360;
+        }
+
+        switch (angle) {
+            case 0: {
+                this.rotation = 0;
+                this.scaleX = IMAGE_SCALE;
+                break;
+            }
+            case 90: {
+                this.rotation = 90;
+                this.scaleX = IMAGE_SCALE;
+                break;
+            }
+            case 180: {
+                this.rotation = 0;
+                this.scaleX = -IMAGE_SCALE;
+                break;
+            }
+            case 270: {
+                this.rotation = -90;
+                this.scaleX = IMAGE_SCALE;
+            }
         }
 
         this._heading = angle;
