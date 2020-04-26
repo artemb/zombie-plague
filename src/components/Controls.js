@@ -26,9 +26,9 @@ export default class Controls extends Phaser.GameObjects.Container {
             this.clearTint()
         }
 
-        let left_btn = this.create_button(50, 50, 1, move_callback(-1, 0), btn_up)
-        let right_btn = this.create_button(120, 50, 4, move_callback(1, 0), btn_up)
-        let fwd_btn = this.create_button(50, 120, 2, move_callback(0, -1), btn_up)
+        let left_btn = this.create_button(50, 50, 1, () => zombie.turn_left(), btn_up)
+        let right_btn = this.create_button(120, 50, 4, () => zombie.turn_right(), btn_up)
+        let fwd_btn = this.create_button(50, 120, 2, () => zombie.move_forward(), btn_up)
         let bwd_btn = this.create_button(120, 120, 3, move_callback(0, 1), btn_up)
     }
 
