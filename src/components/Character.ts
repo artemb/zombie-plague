@@ -1,5 +1,6 @@
 import Phaser from 'phaser'
 import Board from './Board'
+import { Heading, Headings } from './Heading';
 
 const IMAGE_SCALE = 0.08;
 
@@ -12,8 +13,9 @@ const HEADING = {
 
 export default class Character extends Phaser.GameObjects.Sprite {
     board: Board;
-    _heading: number;
+    // _heading: number;
     address: number[];
+    _heading: Heading;
 
     constructor(scene:Phaser.Scene, board:Board, texture:string) {
         super(scene, 0, 0, texture);
@@ -23,10 +25,22 @@ export default class Character extends Phaser.GameObjects.Sprite {
         this.board = board;
         board.add(this);
 
-        this.address = [1, 1]
+        this.address = [1, 1];
+        this._heading = Headings.RIGHT;;
 
-        this._heading = 0;
+        // this._heading = 0;
     }
+
+    set heading(heading:Heading) {
+        this._heading = heading;
+        this.angle = this._heading.angle;
+        this.scaleX = this._heading.flip * IMAGE_SCALE;
+        if (this._heading.flip == -1) {
+            this.angle -= 180;
+        }
+    }
+
+    /*
 
     // the angle is 0 for right, 90 for down, 180 for left, 270 for up
     set heading(heading) {
@@ -60,17 +74,19 @@ export default class Character extends Phaser.GameObjects.Sprite {
 
         this._heading = heading;
     }
+    */
 
     get heading() {
         return this._heading;
     }
 
+
     turn_left() {
-        this.heading -= 90;
+        this.heading = this.heading.turn_left()
     }
 
     turn_right() {
-        this.heading += 90;
+        this.heading = this.heading.turn_right();
     }
 
     position(address:integer[], animate = false) {

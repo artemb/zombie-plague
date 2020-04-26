@@ -1,5 +1,7 @@
 // A component to make handling grid addressing easier
 
+import { Heading } from "./Heading";
+
 export default class Grid {
     cols: number;
     rows: number;
@@ -9,25 +11,9 @@ export default class Grid {
         this.rows = rows;
     }
 
-    facingAddress(from:integer[], heading:integer, forward=true) {
-        const direction_step = forward ? 1 : -1;
-        
-        switch (heading) {
-            case 0: {
-                return [from[0] + direction_step,  from[1]]
-            }
-            case 90: {
-                return [from[0], from[1] + direction_step]
-            }
-            case 180: {
-                return [from[0] - direction_step, from[1]]
-            }
-            case 270: {
-                return [from[0], from[1] - direction_step]
-            }
-        }
-
-        throw new Error(`Unknown heading ${heading}`)
+    facingAddress(from:integer[], heading:Heading, forward=true) {
+        let direction_step = forward ? 1 : -1;
+        return [from[0] + heading.col_step * direction_step, from[1] + heading.row_step * direction_step]
     }
 
     sameAddress(one:integer[], two:integer[]) {
