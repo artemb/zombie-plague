@@ -5,9 +5,8 @@ const IMAGE_SCALE = 0.08;
 
 export default class Character extends Phaser.GameObjects.Sprite {
     board: Board;
-    row: number;
-    column: number;
     _heading: number;
+    address: number[];
 
     constructor(scene:Phaser.Scene, board:Board, texture:string) {
         super(scene, 0, 0, texture);
@@ -17,8 +16,8 @@ export default class Character extends Phaser.GameObjects.Sprite {
         this.board = board;
         board.add(this);
 
-        this.row = 1;
-        this.column = 1;
+        this.address = [1, 1]
+
         this._heading = 0;
     }
 
@@ -67,10 +66,9 @@ export default class Character extends Phaser.GameObjects.Sprite {
         this.heading += 90;
     }
 
-    position(row:integer, column:integer, animate = false) {
-        this.row = row;
-        this.column = column;
-        let v:Phaser.Math.Vector2 = this.board.getPositionOnGrid(row, column)
+    position(address:integer[], animate = false) {
+        this.address = address;
+        let v:Phaser.Math.Vector2 = this.board.getPositionOnGrid(address)
 
         if (animate) {
             this.scene.tweens.add({
@@ -91,51 +89,15 @@ export default class Character extends Phaser.GameObjects.Sprite {
         let row_step = 0;
         let col_step = 0;
 
-        const facing_cell = this.facing_cell(forward);
-        const current_cell = new Phaser.Math.Vector2(this.row, this.column);
+        const facing_cell = this.board.grid.facingAddress(this.address, this.heading, forward)
 
-        if (this.board.is_blocked(current_cell, facing_cell)) {
+        if (this.board.is_blocked(this.address, facing_cell)) {
             return;
         }
 
         let direction_factor = forward ? 1 : -1;
 
-        if (this.heading == 0) {
-            col_step = 1 * direction_factor;
-        } else if (this.heading == 90) {
-            row_step = 1 * direction_factor;
-        } else if (this.heading == 180) {
-            col_step = -1 * direction_factor;
-        } else if (this.heading == 270) {
-            row_step = -1 * direction_factor;
-        } else {
-            console.error(`Unknown heading: ${this.heading}`);
-        }
-
-        
-        this.position(facing_cell.x, facing_cell.y, true);
-    }
-
-    facing_cell(forward=true):Phaser.Math.Vector2 {
-        const direction_step = forward ? 1 : -1;
-        
-        switch (this.heading) {
-            case 0: {
-                return new Phaser.Math.Vector2(this.row, this.column + direction_step);
-            }
-            case 90: {
-                return new Phaser.Math.Vector2(this.row + direction_step, this.column);
-            }
-            case 180: {
-                return new Phaser.Math.Vector2(this.row, this.column - direction_step);
-            }
-            case 270: {
-                return new Phaser.Math.Vector2(this.row - direction_step, this.column)
-            }
-
-            throw new Error("Unexpected direction");
-        }
-        
+        this.position(facing_cell, true);
     }
 
 }

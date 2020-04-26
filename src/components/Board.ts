@@ -1,4 +1,5 @@
 import Phaser from 'phaser'
+import Grid from './Grid'
 
 const GRID_WIDTH = 24
 const GRID_HEIGHT = 20
@@ -8,44 +9,48 @@ const CELL_WIDTH = BOARD_WIDTH / GRID_WIDTH
 const CELL_HEIGHT = BOARD_HEIGHT / GRID_HEIGHT
 
 const obstacles = [
-    [3, 5],
-    [4, 5],
+    [5, 3],
+    [5, 4],
     [5, 5],
-    [3, 6],
-    [4, 6],
-    [5, 6],
-    [3, 7],
-    [4, 7],
-    [5, 7],
-    [3, 8],
-    [4, 8],
-    [5, 8],
-    [3, 9],
-    [4, 9],
-    [5, 9]
+    [6, 3],
+    [6, 4],
+    [6, 5],
+    [7, 3],
+    [7, 4],
+    [7, 5],
+    [8, 3],
+    [8, 4],
+    [8, 5],
+    [9, 3],
+    [9, 4],
+    [9, 5]
 ]
 
 const walls = [
-    [1, 15, 2, 15],
-    [1, 16, 2, 16],
-    [2, 14, 2, 15]
+    [[15, 1], [15, 2]],
+    [[16, 1], [16, 2]],
+    [[14, 2], [15, 2]]
 ]
 
 
 export default class BoardScene extends Phaser.GameObjects.Container {
+    grid: Grid
+
     static get BOARD_WIDTH() {
         return BOARD_WIDTH
     }
 
-    getPositionOnGrid(row:integer, column:integer):Phaser.Math.Vector2 {
-        let x:number = - this.width / 2 + column * CELL_WIDTH - CELL_WIDTH / 2;
-        let y:number = -this.height / 2 + row * CELL_HEIGHT - CELL_HEIGHT / 2;
+    getPositionOnGrid(address:integer[]):Phaser.Math.Vector2 {
+        let x:number = - this.width / 2 + address[0] * CELL_WIDTH - CELL_WIDTH / 2;
+        let y:number = -this.height / 2 + address[1] * CELL_HEIGHT - CELL_HEIGHT / 2;
+
         return new Phaser.Math.Vector2(x, y)
     }
 
     constructor (scene:Phaser.Scene, x:integer, y:integer) {
         super(scene, x, y)
 
+        this.grid = new Grid(24, 20);
         this.setSize(BOARD_WIDTH, BOARD_HEIGHT)
         scene.add.existing(this);
         this.add(scene.add.image(0, 0, 'board'))
@@ -57,29 +62,20 @@ export default class BoardScene extends Phaser.GameObjects.Container {
         scene.load.image('board', 'assets/board.png')
     }
 
-    is_blocked(from:Phaser.Math.Vector2, to:Phaser.Math.Vector2) {
-        // check world boundaries
-        if (to.x < 1 || to.x > GRID_HEIGHT || to.y < 1 || to.y > GRID_WIDTH) {
+    is_blocked(from:integer[], to:integer[]) {
+        // check boundaries
+        if (this.grid.isOutOfBounds(to)) {
             return true;
         }
 
         // check for static obstacles
-        if (obstacles.some((val) => val[0] == to.x && val[1] == to.y)) {
+        if (this.grid.addressInList(to, obstacles)) {
             return true;
         }
 
         // check for walls
-        return walls.some((wall) => {
-            if (wall[0] == from.x && wall[1] == from.y && wall[2] == to.x && wall[3] == to.y) {
-                return true;
-            }
-            if (wall[0] == to.x && wall[1] == to.y && wall[2] == from.x && wall[3] == from.y) {
-                return true;
-            }
-            return false;
-        })
-
-        
+        if (this.grid.hitsWall(from, to, walls)) {
+            return true;
+        }
     }
-
 }

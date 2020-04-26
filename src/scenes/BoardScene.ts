@@ -23,7 +23,7 @@ export default class BoardScene extends Phaser.Scene {
         this.board = new Board(this, +this.game.config.width - Board.BOARD_WIDTH / 2, +this.game.config.height / 2)
 
         let zombie = new Character(this, this.board, 'zombie')
-        zombie.position(3, 3)
+        zombie.position([3, 3])
 
         this.controls = new Controls(this, 0, 0, zombie)
 
