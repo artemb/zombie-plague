@@ -87,18 +87,20 @@ export default class Character extends Phaser.GameObjects.Sprite {
         }
     }
 
-    move_forward() {
+    move(forward=true) {
         let row_step = 0;
         let col_step = 0;
 
+        let direction_factor = forward ? 1 : -1;
+
         if (this.heading == 0) {
-            col_step = 1;
+            col_step = 1 * direction_factor;
         } else if (this.heading == 90) {
-            row_step = 1;
+            row_step = 1 * direction_factor;
         } else if (this.heading == 180) {
-            col_step = -1
+            col_step = -1 * direction_factor;
         } else if (this.heading == 270) {
-            row_step = -1
+            row_step = -1 * direction_factor;
         } else {
             console.error(`Unknown heading: ${this.heading}`);
         }
