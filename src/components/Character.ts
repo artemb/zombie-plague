@@ -7,7 +7,7 @@ export default class Character extends Phaser.GameObjects.Sprite {
     column: number;
     _heading: number;
 
-    constructor(scene, board, texture) {
+    constructor(scene:Phaser.Scene, board:Board, texture:string) {
         super(scene, 0, 0, texture);
         this.setScale(0.08);
         scene.add.existing(this);
@@ -43,7 +43,7 @@ export default class Character extends Phaser.GameObjects.Sprite {
         this.heading += 90;
     }
 
-    position(row, column) {
+    position(row:integer, column:integer) {
         this.row = row;
         this.column = column;
         this.board.positionOnGrid(this, row, column);

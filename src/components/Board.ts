@@ -13,13 +13,13 @@ export default class BoardScene extends Phaser.GameObjects.Container {
         return BOARD_WIDTH
     }
 
-    positionOnGrid(object, row, column) {
+    positionOnGrid(object:Phaser.GameObjects.Sprite, row:integer, column:integer) {
         object.x = - this.width / 2 + column * CELL_WIDTH - CELL_WIDTH / 2;
         object.y = -this.height / 2 + row * CELL_HEIGHT - CELL_HEIGHT / 2;
         return object;
     }    
 
-    constructor (scene, x, y) {
+    constructor (scene:Phaser.Scene, x:integer, y:integer) {
         super(scene, x, y)
 
         this.setSize(BOARD_WIDTH, BOARD_HEIGHT)
@@ -29,7 +29,7 @@ export default class BoardScene extends Phaser.GameObjects.Container {
     }
 
 
-    static preload(scene) {
+    static preload(scene:Phaser.Scene) {
         scene.load.image('board', 'assets/board.png')
     }
 

@@ -18,14 +18,14 @@ export default class Controls extends Phaser.GameObjects.Container {
         // this.add(gr)
         // gr.fillRectShape(new Phaser.Geom.Rectangle(0, 0, Math.max(50, this.width), Math.max(70, this.height)))
 
-        function move_callback(x, y) {
-            return function (pointer) {
+        function move_callback(x:integer, y:integer) {
+            return function (pointer:Phaser.Input.Pointer) {
                 this.setTint(0xFF0000)
                 zombie.move_forward();
             }
         }
 
-        function btn_up(pointer) {
+        function btn_up(pointer:Phaser.Input.Pointer) {
             this.clearTint()
         }
 
@@ -35,7 +35,7 @@ export default class Controls extends Phaser.GameObjects.Container {
         let bwd_btn = this.create_button(120, 120, 3, move_callback(0, 1), btn_up)
     }
 
-    create_button(x, y, frame, onPointerDown, onPointerUp) {
+    create_button(x:integer, y:integer, frame:integer, onPointerDown:Function, onPointerUp:Function) {
         let btn = this.scene.add.sprite(x, y, 'buttons', frame).setScale(0.3).setInteractive();
         btn.on('pointerdown', onPointerDown)
         btn.on('pointerup', onPointerUp)
