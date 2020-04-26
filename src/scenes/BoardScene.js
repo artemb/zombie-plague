@@ -11,7 +11,6 @@ export default class BoardScene extends Phaser.Scene {
         Board.preload(this)
         this.load.image('zombie', 'assets/characters/zombies/male/idle (1).png')
         this.load.spritesheet('buttons', 'assets/ui/controls.png', {frameWidth: 200, frameHeight: 215})
-        console.log(this.game)
     }
 
     create_button(x, y, frame, onPointerDown, onPointerUp) {
@@ -25,15 +24,8 @@ export default class BoardScene extends Phaser.Scene {
     create () {
         this.board = new Board(this, this.game.config.width - Board.BOARD_WIDTH / 2, this.game.config.height / 2)
 
-        let zombie = new Character(this, 'zombie')
-        this.board.add(zombie)
-        this.board.positionOnGrid(zombie, 4, 4)
-
-        // this.positionOnGrid(zombie, 4, 23)
-        // this.add(zombie)
-
-        // this.add.image(this.game.config.width / 2, this.game.config.height / 2, 'board')
-        // let zombie = this.board.add.image(20, 20, 'zombie').setScale(0.08)
+        let zombie = new Character(this, this.board, 'zombie')
+        zombie.position(3, 3)
 
         function move_callback(x, y) {
             return function (pointer) {
