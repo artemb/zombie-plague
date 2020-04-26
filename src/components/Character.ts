@@ -3,6 +3,13 @@ import Board from './Board'
 
 const IMAGE_SCALE = 0.08;
 
+const HEADING = {
+    RIGHT: 0,
+    DOWN: 90,
+    LEFT: 180,
+    UP: 270    
+}
+
 export default class Character extends Phaser.GameObjects.Sprite {
     board: Board;
     _heading: number;
@@ -22,36 +29,36 @@ export default class Character extends Phaser.GameObjects.Sprite {
     }
 
     // the angle is 0 for right, 90 for down, 180 for left, 270 for up
-    set heading(angle) {
-        if (angle < 0) {
-            angle += 360;
-        } else if (angle >= 360) {
-            angle -= 360;
+    set heading(heading) {
+        if (heading < 0) {
+            heading += 360;
+        } else if (heading >= 360) {
+            heading -= 360;
         }
 
-        switch (angle) {
-            case 0: {
+        switch (heading) {
+            case HEADING.RIGHT: {
                 this.angle = 0;
                 this.scaleX = IMAGE_SCALE;
                 break;
             }
-            case 90: {
+            case HEADING.DOWN: {
                 this.angle = 90;
                 this.scaleX = IMAGE_SCALE;
                 break;
             }
-            case 180: {
+            case HEADING.LEFT: {
                 this.angle = 0;
                 this.scaleX = -IMAGE_SCALE;
                 break;
             }
-            case 270: {
+            case HEADING.UP: {
                 this.angle = -90;
                 this.scaleX = IMAGE_SCALE;
             }
         }
 
-        this._heading = angle;
+        this._heading = heading;
     }
 
     get heading() {
@@ -86,16 +93,11 @@ export default class Character extends Phaser.GameObjects.Sprite {
     }
 
     move(forward=true) {
-        let row_step = 0;
-        let col_step = 0;
-
         const facing_cell = this.board.grid.facingAddress(this.address, this.heading, forward)
 
         if (this.board.is_blocked(this.address, facing_cell)) {
             return;
         }
-
-        let direction_factor = forward ? 1 : -1;
 
         this.position(facing_cell, true);
     }
