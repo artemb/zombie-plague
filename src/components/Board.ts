@@ -59,7 +59,7 @@ export default class BoardScene extends Phaser.GameObjects.Container {
 
 
     static preload(scene:Phaser.Scene) {
-        scene.load.image('board', 'assets/board.png')
+        scene.load.image('board', '/dist/assets/board.png')
     }
 
     is_blocked(from:integer[], to:integer[]) {

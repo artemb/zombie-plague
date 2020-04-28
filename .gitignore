@@ -3,3 +3,5 @@
 /node_modules
 .idea
 .vscode
+/venv/
+__pycache__
