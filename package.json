@@ -3,8 +3,8 @@
 	"version": "1.0.0",
 	"description": "A template project for Phaser3 using Parceljs",
 	"scripts": {
-		"start": "parcel watch src/main.ts --out-dir dist",
-		"build": "parcel build src/main.ts --out-dir dist",
+		"start": "parcel watch src/main.ts --out-dir static --public-url .",
+		"build": "parcel build src/main.ts --out-dir static --public-url .",
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
 	"author": "supertommy",
@@ -23,9 +23,6 @@
 	"dependencies": {
 		"phaser": "^3.22.0"
 	},
-	"parcelCleanPaths": [
-		"dist"
-	],
 	"staticFiles": {
 		"staticPath": "public",
 		"watcherGlob": "**"
