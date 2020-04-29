@@ -2,6 +2,7 @@ import Phaser, { Tilemaps } from 'phaser'
 import Board from '../components/Board'
 import Character from '../components/Character'
 import Controls from '../components/Controls'
+import io from 'socket.io-client'
 
 export default class BoardScene extends Phaser.Scene {
     board: Board
@@ -26,6 +27,12 @@ export default class BoardScene extends Phaser.Scene {
         zombie.position([3, 3])
 
         this.controls = new Controls(this, 0, 0, zombie)
+
+        let socket = io()
+        socket.on('connect', function() {
+            socket.emit('my event', {data: 'Hello from BoardScene.ts!!!'});
+        });
+
 
     }
 }
