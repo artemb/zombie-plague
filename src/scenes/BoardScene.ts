@@ -23,11 +23,6 @@ export default class BoardScene extends Phaser.Scene {
         socket.on('connect', () => {
             socket.emit('join', {room: 'Room 1'})
         });
-
-        socket.on('game start', () => {
-            alert('Game has started!!!')
-            console.log("Game has started!!!")
-        })
     }
 
 
