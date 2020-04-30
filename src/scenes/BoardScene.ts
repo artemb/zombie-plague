@@ -7,6 +7,7 @@ import io from 'socket.io-client'
 export default class BoardScene extends Phaser.Scene {
     board: Board
     controls: Controls
+    socket: SocketIOClient.Socket
     
     constructor() {
         super('game-scene')        
@@ -16,6 +17,17 @@ export default class BoardScene extends Phaser.Scene {
         Board.preload(this)
         this.load.image('zombie', 'static/assets/characters/zombies/male/idle (1).png')
         this.load.spritesheet('buttons', 'static/assets/ui/controls.png', {frameWidth: 200, frameHeight: 215})
+        let socket = io()
+        this.socket = socket
+        
+        socket.on('connect', () => {
+            socket.emit('join', {room: 'Room 1'})
+        });
+
+        socket.on('game_start', () => {
+            alert('Game has started!!!')
+            console.log("Game has started!!!")
+        })
     }
 
 
@@ -27,12 +39,5 @@ export default class BoardScene extends Phaser.Scene {
         zombie.position([3, 3])
 
         this.controls = new Controls(this, 0, 0, zombie)
-
-        let socket = io()
-        socket.on('connect', function() {
-            socket.emit('my event', {data: 'Hello from BoardScene.ts!!!'});
-        });
-
-
     }
 }
