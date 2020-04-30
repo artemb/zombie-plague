@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, session
 from flask_socketio import SocketIO, join_room, leave_room, send, emit
 
 app = Flask(__name__)
@@ -17,18 +17,17 @@ def handle_my_custom_event(json):
 
 @socketio.on('join')
 def on_join(data):
-    username = data['username']
     room = data['room']
+    session['room'] = room
     join_room(room)
-    emit('Game started', {room: 'Room 1'}, json=True, room=room)
-    print(f"{username} joined {room}")
+    emit('game start', {room: room}, json=True, room=room)
+    print(f"A user joined {room}")
 
 @socketio.on('leave')
 def on_leave(data):
-    username = data['username']
     room = data['room']
     leave_room(room)
-    print(f"{username} left {room}")
+    print(f"A user left {room}")
 
 @socketio.on('update')
 def on_update(data):

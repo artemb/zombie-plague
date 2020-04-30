@@ -15,7 +15,7 @@ export default class BoardScene extends Phaser.Scene {
 
     preload () {
         Board.preload(this)
-        this.load.image('zombie', 'static/assets/characters/zombies/male/idle (1).png')
+        this.load.image('zombie', 'static/assets/characters/zombies/male/idle.png')
         this.load.spritesheet('buttons', 'static/assets/ui/controls.png', {frameWidth: 200, frameHeight: 215})
         let socket = io()
         this.socket = socket
@@ -24,7 +24,7 @@ export default class BoardScene extends Phaser.Scene {
             socket.emit('join', {room: 'Room 1'})
         });
 
-        socket.on('game_start', () => {
+        socket.on('game start', () => {
             alert('Game has started!!!')
             console.log("Game has started!!!")
         })
