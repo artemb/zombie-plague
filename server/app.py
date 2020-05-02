@@ -1,6 +1,8 @@
 from flask import Flask, render_template, session
 from flask_socketio import SocketIO, join_room, leave_room, send, emit
-from game.grid import Grid, Character, Action, Step, Turn
+from game.grid import Grid
+from game.character import Character
+from game.enums import Action, Step, Turn
 
 app: Flask = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
@@ -21,6 +23,7 @@ def on_join(data):
     room = data['room']
     session['room'] = room
     join_room(room)
+    send(grid.state())
 
 
 @socketio.on('leave')
@@ -36,7 +39,7 @@ def on_update(data):
         f"State update request with {data}")
 
     if (data['action'] in (Action.STEP_FORWARD.value, Action.STEP_BACKWARD.value)):
-        zombie1.step(Step(data['action']))
+        zombie1.step(Step(data['action']))  # pylint: disable=no-value-for-parameter
 
     if (data['action'] == Action.TURN_RIGHT.value):
         zombie1.turn(Turn.RIGHT)
