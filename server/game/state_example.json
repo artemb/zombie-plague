@@ -1,0 +1,12 @@
+{
+  "characters": {
+    "zombie1": {
+      "address": [1, 1],
+      "direction": "DOWN"
+    },
+    "zombie2": {
+      "address": [2, 2],
+      "direction": "UP"
+    }
+  }
+}

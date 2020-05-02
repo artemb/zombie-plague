@@ -1,20 +1,12 @@
 {
-  "name": "phaser3-parcel-template",
-  "version": "1.0.0",
-  "description": "A template project for Phaser3 using Parceljs",
+  "name": "zombie-plague-game",
+  "version": "0.1.0",
   "scripts": {
-    "dev": "NODE_ENV=standalone parcel serve src/dev.html --out-dir dist",
-    "py": "NODE_ENV=internal parcel watch src/main.ts --out-dir static --public-url .",
+    "dev": "NODE_ENV=standalone parcel serve client/src/dev.html --out-dir client/build",
+    "py": "NODE_ENV=internal parcel watch client/src/main.ts --out-dir server/static --public-url .",
     "build": "parcel build src/main.ts --out-dir static --public-url .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "supertommy",
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/ourcade/phaser3-parcel-template.git"
-  },
-  "homepage": "https://github.com/ourcade/phaser3-parcel-template",
   "devDependencies": {
     "@types/socket.io-client": "^1.4.32",
     "@types/node": "^13.13.4",
@@ -28,7 +20,7 @@
     "socket.io-client": "^2.3.0"
   },
   "staticFiles": {
-    "staticPath": "public",
+    "staticPath": "client/public",
     "watcherGlob": "**"
   }
 }
