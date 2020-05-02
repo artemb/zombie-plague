@@ -4,13 +4,6 @@ import { Heading, Headings } from "./Heading";
 
 const IMAGE_SCALE = 0.08;
 
-const HEADING = {
-  RIGHT: 0,
-  DOWN: 90,
-  LEFT: 180,
-  UP: 270,
-};
-
 export default class Character extends Phaser.GameObjects.Sprite {
   board: Board;
   // _heading: number;
@@ -37,6 +30,21 @@ export default class Character extends Phaser.GameObjects.Sprite {
 
     socket.on("message", (data: object) => {
       this.position(data["characters"]["zombie1"]["address"], true);
+      if (data["characters"]["zombie1"]["direction"] == "UP") {
+        this.heading = Headings.UP;
+      }
+
+      if (data["characters"]["zombie1"]["direction"] == "DOWN") {
+        this.heading = Headings.DOWN;
+      }
+
+      if (data["characters"]["zombie1"]["direction"] == "LEFT") {
+        this.heading = Headings.LEFT;
+      }
+
+      if (data["characters"]["zombie1"]["direction"] == "RIGHT") {
+        this.heading = Headings.RIGHT;
+      }
     });
   }
 

@@ -1,32 +1,34 @@
 {
-	"name": "phaser3-parcel-template",
-	"version": "1.0.0",
-	"description": "A template project for Phaser3 using Parceljs",
-	"scripts": {
-		"start": "parcel watch src/main.ts --out-dir static --public-url .",
-		"build": "parcel build src/main.ts --out-dir static --public-url .",
-		"test": "echo \"Error: no test specified\" && exit 1"
-	},
-	"author": "supertommy",
-	"license": "MIT",
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/ourcade/phaser3-parcel-template.git"
-	},
-	"homepage": "https://github.com/ourcade/phaser3-parcel-template",
-	"devDependencies": {
-		"@types/socket.io-client": "^1.4.32",
-		"minimist": ">=1.2.2",
-		"parcel-plugin-clean-easy": "^1.0.2",
-		"parcel-plugin-static-files-copy": "^2.2.1",
-		"typescript": "^3.8.3"
-	},
-	"dependencies": {
-		"phaser": "^3.22.0",
-		"socket.io-client": "^2.3.0"
-	},
-	"staticFiles": {
-		"staticPath": "public",
-		"watcherGlob": "**"
-	}
+  "name": "phaser3-parcel-template",
+  "version": "1.0.0",
+  "description": "A template project for Phaser3 using Parceljs",
+  "scripts": {
+    "dev": "NODE_ENV=standalone parcel serve src/dev.html --out-dir dist",
+    "py": "NODE_ENV=internal parcel watch src/main.ts --out-dir static --public-url .",
+    "build": "parcel build src/main.ts --out-dir static --public-url .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "supertommy",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ourcade/phaser3-parcel-template.git"
+  },
+  "homepage": "https://github.com/ourcade/phaser3-parcel-template",
+  "devDependencies": {
+    "@types/socket.io-client": "^1.4.32",
+    "@types/node": "^13.13.4",
+    "minimist": ">=1.2.2",
+    "parcel-plugin-clean-easy": "^1.0.2",
+    "parcel-plugin-static-files-copy": "^2.2.1",
+    "typescript": "^3.8.3"
+  },
+  "dependencies": {
+    "phaser": "^3.22.0",
+    "socket.io-client": "^2.3.0"
+  },
+  "staticFiles": {
+    "staticPath": "public",
+    "watcherGlob": "**"
+  }
 }
