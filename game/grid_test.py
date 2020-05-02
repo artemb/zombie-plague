@@ -1,8 +1,9 @@
 import unittest
-from game.grid import Grid, Direction, Character, Turn
+from game.grid import Grid, Direction, Character, Turn, Step
+
 
 class TestGrid(unittest.TestCase):
-    
+
     def test_size_1(self):
         grid = Grid(5, 3)
         self.assertEqual(grid.cols, 5)
@@ -47,6 +48,36 @@ class TestGrid(unittest.TestCase):
         self.assertEquals(char.direction, Direction.UP)
         self.assertEquals(char.grid, grid)
 
+    def test_character_turns(self):
+        grid = Grid(5, 5)
+        char = Character("zombie", grid, (3, 3), Direction.DOWN)
+
+        char.turn(Turn.LEFT)
+
+        self.assertEquals(char.direction, Direction.RIGHT)
+
+        char.turn(Turn.RIGHT)
+
+        self.assertEquals(char.direction, Direction.DOWN)
+
+    def test_character_steps(self):
+        grid = Grid(5, 5)
+        char = Character("zombie", grid, (3, 3), Direction.DOWN)
+
+        char.step(Step.FORWARD)
+        self.assertEqual(char.address, (3, 4))
+
+        char.step(Step.BACKWARD)
+        self.assertEqual(char.address, (3, 3))
+
+        char = Character("human", grid, (2, 2), Direction.RIGHT)
+
+        char.step(Step.FORWARD)
+        self.assertEqual(char.address, (3, 2))
+
+        char.step(Step.BACKWARD)
+        self.assertEqual(char.address, (2, 2))
+
     def test_turns(self):
         d = Direction.RIGHT
 
@@ -73,6 +104,31 @@ class TestGrid(unittest.TestCase):
 
         d = d.turn(Turn.RIGHT)
         self.assertEqual(d, Direction.RIGHT)
+
+    def test_grid_characters(self):
+        grid = Grid(5, 5)
+        self.assertEqual(len(grid.characters), 0)
+
+        char = Character("zombie1", grid, (1, 1))
+        self.assertEqual(len(grid.characters), 1)
+        self.assertEqual(grid.characters[0], char)
+
+        Character("zombie2", grid, (2, 2))
+        self.assertEquals(len(grid.characters), 2)
+
+    def test_state(self):
+
+        grid = Grid(5, 5)
+        Character("zombie1", grid, (1, 1), Direction.LEFT)
+        Character("zombie2", grid, (2, 3))
+
+        state = grid.state()
+
+        self.assertEqual(len(state['characters']), 2)
+        self.assertIn("zombie1", state['characters'].keys())
+        self.assertEqual(state['characters']['zombie1']['address'], (1, 1))
+        self.assertEqual(state['characters']['zombie1']['direction'], 'LEFT')
+        self.assertEqual(state['characters']['zombie2']['address'], (2, 3))
 
 
 if __name__ == '__main__':
