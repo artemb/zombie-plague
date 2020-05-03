@@ -1,10 +1,5 @@
 OBSTACLES = []
-
-WALLS = (
-    ((15, 1), (15, 2)),
-    ((16, 1), (16, 2)),
-    ((14, 2), (15, 2))
-)
+WALLS = []
 
 def rect_obstacle(top_left, width, height):
     result = []
@@ -12,6 +7,22 @@ def rect_obstacle(top_left, width, height):
     for col in range(width):
         for row in range(height):
             result.append((top_left[0] + col, top_left[1] + row))
+
+    return result
+
+def hwall(top_left, length):
+    result = []
+
+    for col in range(length):
+        result.append(((top_left[0] + col, top_left[1] - 1), (top_left[0] + col, top_left[1])))
+
+    return result
+
+def vwall(top_left, length):
+    result = []
+
+    for row in range(length):
+        result.append(((top_left[0] - 1, top_left[1] + row), (top_left[0], top_left[1] + row)))
 
     return result
 
@@ -55,3 +66,21 @@ OBSTACLES += [(17, 14), (18, 14), (18, 15)]
 OBSTACLES += rect_obstacle((14, 9), 1, 3)
 OBSTACLES += rect_obstacle((16, 9), 3, 2)
 OBSTACLES += rect_obstacle((16, 13), 3, 1)
+
+
+# Garage walls
+# - all garage walls have obstactles next to them, so can skip
+
+# House walls. Again, most are blocked by obstacles anyway
+WALLS += hwall((13, 9), 6)
+WALLS += vwall((19, 9), 3)
+WALLS += vwall((8, 13), 1)
+
+# Internal walls
+WALLS += vwall((14, 9), 5)
+WALLS += hwall((14, 12), 1)
+WALLS += hwall((15, 14), 4)
+WALLS += vwall((15, 15), 5)
+WALLS += vwall((13, 15), 5)
+WALLS += vwall((14, 15), 1)
+WALLS += hwall((13, 16), 1)
