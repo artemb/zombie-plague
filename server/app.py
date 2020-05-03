@@ -3,12 +3,13 @@ from flask_socketio import SocketIO, join_room, leave_room, send, emit
 from game.grid import Grid
 from game.character import Character
 from game.enums import Action, Step, Turn
+from game.grid_def import OBSTACLES, WALLS
 
 app: Flask = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
 socketio = SocketIO(app)
 
-grid = Grid(24, 20)
+grid = Grid(24, 20, obstacles=OBSTACLES, walls=WALLS)
 zombie1 = Character("zombie1", grid, (2, 2))
 zombie_index = 1
 

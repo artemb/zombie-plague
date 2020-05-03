@@ -11,13 +11,16 @@ class Character():
 
         grid.add_character(self)
 
-    def step(self, step: Step):
+    def facing_cell(self, step:Step):
         col = self.address[0] + self.direction.vector[0] * step.modifier
         row = self.address[1] + self.direction.vector[1] * step.modifier
-        self.address = (col, row)
 
-    def can_step(self, step: Step):
-        pass
+        return (col, row)
+
+    def step(self, step: Step):
+        target = self.facing_cell(step)
+        if self.grid.can_step(self.address, target):
+            self.address = target
 
     def turn(self, turn: Turn = Turn.LEFT):
         self.direction = self.direction.turn(turn)
