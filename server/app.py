@@ -33,10 +33,11 @@ def on_join(data):
 
     # registering the player
     if not 'uid' in session:
-        player_id = uuid4()
+        player_id = str(uuid4())
         player_name = Faker().name()
         session['uid'] = player_id
         mgr.register_player(player_id, player_name)
+        emit('registration', {'id': player_id})
         app.logger.info(f"Registered {player_name} at {player_id}") # pylint: disable=no-member
     
     # sending the game state

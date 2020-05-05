@@ -12,5 +12,5 @@ class Player:
         game.add_player(self)
 
     def create_character(self, address: Tuple, direction: Direction):
-        char = Character("abc", self.game.grid, address, direction)
+        char = Character(self.id, self.game.grid, address, direction)
         self.characters.add(char)

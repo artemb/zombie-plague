@@ -10,6 +10,7 @@ export default class Character extends Phaser.GameObjects.Sprite {
   address: number[];
   _heading: Heading;
   socket: SocketIOClient.Socket;
+  char_id: string;
 
   constructor(
     scene: Phaser.Scene,
@@ -26,23 +27,28 @@ export default class Character extends Phaser.GameObjects.Sprite {
 
     this.address = [1, 1];
     this._heading = Headings.RIGHT;
+    this.char_id = null
     this.socket = socket;
 
+    socket.on('registration', (data:object) => {
+      this.char_id = data['id']
+    });
+
     socket.on("message", (data: object) => {
-      this.position(data["characters"]["zombie1"]["address"], true);
-      if (data["characters"]["zombie1"]["direction"] == "UP") {
+      this.position(data["characters"][this.char_id]["address"], true);
+      if (data["characters"][this.char_id]["direction"] == "UP") {
         this.heading = Headings.UP;
       }
 
-      if (data["characters"]["zombie1"]["direction"] == "DOWN") {
+      if (data["characters"][this.char_id]["direction"] == "DOWN") {
         this.heading = Headings.DOWN;
       }
 
-      if (data["characters"]["zombie1"]["direction"] == "LEFT") {
+      if (data["characters"][this.char_id]["direction"] == "LEFT") {
         this.heading = Headings.LEFT;
       }
 
-      if (data["characters"]["zombie1"]["direction"] == "RIGHT") {
+      if (data["characters"][this.char_id]["direction"] == "RIGHT") {
         this.heading = Headings.RIGHT;
       }
     });
