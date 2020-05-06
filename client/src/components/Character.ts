@@ -12,12 +12,7 @@ export default class Character extends Phaser.GameObjects.Sprite {
   socket: SocketIOClient.Socket;
   char_id: string;
 
-  constructor(
-    scene: Phaser.Scene,
-    board: Board,
-    texture: string,
-    socket: SocketIOClient.Socket
-  ) {
+  constructor(scene: Phaser.Scene,  board: Board, texture: string, socket: SocketIOClient.Socket ) {
     super(scene, 0, 0, texture);
     this.setScale(IMAGE_SCALE);
     scene.add.existing(this);
@@ -62,42 +57,6 @@ export default class Character extends Phaser.GameObjects.Sprite {
       this.angle -= 180;
     }
   }
-
-  /*
-
-    // the angle is 0 for right, 90 for down, 180 for left, 270 for up
-    set heading(heading) {
-        if (heading < 0) {
-            heading += 360;
-        } else if (heading >= 360) {
-            heading -= 360;
-        }
-
-        switch (heading) {
-            case HEADING.RIGHT: {
-                this.angle = 0;
-                this.scaleX = IMAGE_SCALE;
-                break;
-            }
-            case HEADING.DOWN: {
-                this.angle = 90;
-                this.scaleX = IMAGE_SCALE;
-                break;
-            }
-            case HEADING.LEFT: {
-                this.angle = 0;
-                this.scaleX = -IMAGE_SCALE;
-                break;
-            }
-            case HEADING.UP: {
-                this.angle = -90;
-                this.scaleX = IMAGE_SCALE;
-            }
-        }
-
-        this._heading = heading;
-    }
-    */
 
   get heading() {
     return this._heading;

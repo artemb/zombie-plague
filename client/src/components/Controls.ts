@@ -2,6 +2,7 @@ import Phaser from "phaser";
 import Board from "./Board";
 import Character from "./Character";
 import SocketIOClient from "socket.io-client";
+import CNST from './consts'
 
 enum Action {
   FORWARD = "FORWARD",
@@ -14,13 +15,11 @@ export default class Controls extends Phaser.GameObjects.Container {
   zombie: Character;
   socket: SocketIOClient.Socket;
 
-  constructor(
-    scene: Phaser.Scene,
-    x: integer,
-    y: integer,
-    zombie: Character,
-    socket: SocketIOClient.Socket
-  ) {
+  static preLoad(scene:Phaser.Scene) {
+    scene.load.html('nameform', CNST.WEB_PREFIX + 'assets/username.html')
+  }
+
+  constructor(scene: Phaser.Scene, x: integer, y: integer, zombie: Character, socket: SocketIOClient.Socket) {
     super(scene, x, y);
     this.setSize(
       +scene.game.config.width - Board.BOARD_WIDTH,
@@ -32,6 +31,15 @@ export default class Controls extends Phaser.GameObjects.Container {
     this.zombie = zombie;
 
     this.socket = socket;
+
+    const nameform = scene.add.dom(50, 50).createFromCache('nameform');
+    this.add(nameform);
+    nameform.addListener('click');
+    nameform.on('click', (e) => {
+      if (e.target.id === 'submit-username') {
+        console.log(this);
+      }
+    });
 
     let left_btn = this.create_button(50, 50, 1, () =>
       this.sendUpdate(Action.LEFT)
@@ -51,12 +59,7 @@ export default class Controls extends Phaser.GameObjects.Container {
     this.socket.emit("update", { action: action });
   }
 
-  create_button(
-    x: integer,
-    y: integer,
-    frame: integer,
-    onPointerDown: Function
-  ) {
+  create_button(x: integer, y: integer, frame: integer, onPointerDown: Function) {
     let btn = this.scene.add
       .sprite(x, y, "buttons", frame)
       .setScale(0.3)

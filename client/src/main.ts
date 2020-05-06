@@ -7,6 +7,10 @@ const config = {
   height: 752,
   physics: {},
   scene: [BoardScene],
+  parent: 'game-container',
+  dom: {
+    createContainer: true
+  },
   scale: {
     mode: Phaser.Scale.FIT,
     autoCenter: Phaser.Scale.CENTER_BOTH,
