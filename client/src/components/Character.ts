@@ -1,19 +1,25 @@
 import Phaser from "phaser";
 import Board from "./Board";
 import { Heading, Headings } from "./Heading";
+import CNST from './consts'
 
-const IMAGE_SCALE = 0.08;
+const IMAGE_SCALE = 1;
 
 export default class Character extends Phaser.GameObjects.Sprite {
   board: Board;
-  // _heading: number;
   address: number[];
   _heading: Heading;
   socket: SocketIOClient.Socket;
   char_id: string;
 
+  static preload(scene: Phaser.Scene) {
+    scene.load.image('char-down', CNST.WEB_PREFIX + 'assets/chars/2.1idle.gif')
+    scene.load.image('char-right', CNST.WEB_PREFIX + 'assets/chars/2.2idle.gif')
+    scene.load.image('char-up', CNST.WEB_PREFIX + 'assets/chars/2.3idle.gif')
+  }
+
   constructor(scene: Phaser.Scene,  board: Board, texture: string, socket: SocketIOClient.Socket ) {
-    super(scene, 0, 0, texture);
+    super(scene, 0, 0, 'char-down');
     this.setScale(IMAGE_SCALE);
     scene.add.existing(this);
 
@@ -51,23 +57,30 @@ export default class Character extends Phaser.GameObjects.Sprite {
 
   set heading(heading: Heading) {
     this._heading = heading;
-    this.angle = this._heading.angle;
-    this.scaleX = this._heading.flip * IMAGE_SCALE;
-    if (this._heading.flip == -1) {
-      this.angle -= 180;
+
+    if (heading == Headings.UP) {
+      this.setTexture('char-up');
+      this.scaleX = IMAGE_SCALE;
+    }
+
+    if (heading == Headings.RIGHT) {
+      this.setTexture('char-right');
+      this.scaleX = IMAGE_SCALE;
+    }
+
+    if (heading == Headings.DOWN) {
+      this.setTexture('char-down');
+      this.scaleX = IMAGE_SCALE;
+    }
+
+    if (heading == Headings.LEFT) {
+      this.setTexture('char-right')
+      this.scaleX = - IMAGE_SCALE;
     }
   }
 
   get heading() {
     return this._heading;
-  }
-
-  turn_left() {
-    this.heading = this.heading.turn_left();
-  }
-
-  turn_right() {
-    this.heading = this.heading.turn_right();
   }
 
   position(address: integer[], animate = false) {
