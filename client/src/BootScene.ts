@@ -17,10 +17,12 @@ export default class BootScene extends Phaser.Scene {
             frameWidth: 200,
             frameHeight: 215,
         });
+        this.load.atlasXML('ui-button', c.WEB_PREFIX + "assets/ui/blue_sheet.png",
+            c.WEB_PREFIX + "assets/ui/blue_sheet.xml")
     }
 
     create() {
         console.log('Boot finished');
-        this.scene.run('Board');
+        this.scene.run('Title');
     }
 }
