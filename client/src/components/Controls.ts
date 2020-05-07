@@ -14,7 +14,6 @@ enum Action {
 export default class Controls extends Phaser.GameObjects.Container {
   zombie: Character;
   socket: SocketIOClient.Socket;
-  username: string;
 
   static preLoad(scene:Phaser.Scene) {
     scene.load.html('nameform', CNST.WEB_PREFIX + 'assets/username.html')
@@ -31,18 +30,6 @@ export default class Controls extends Phaser.GameObjects.Container {
 
     this.zombie = zombie;
     this.socket = socket;
-    this.username = null;
-
-    const nameform = scene.add.dom(this.width / 2, 250).createFromCache('nameform');
-    this.add(nameform);
-    nameform.addListener('click');
-    nameform.on('click', (e) => {
-      if (e.target.id === 'submit-username') {
-        // @ts-ignore
-        this.username = document.getElementById('user-name')?.value;
-        nameform.visible = false;
-      }
-    });
 
     let left_btn = this.create_button(50, 50, 1, () =>
       this.sendUpdate(Action.LEFT)
