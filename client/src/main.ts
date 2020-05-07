@@ -1,12 +1,13 @@
 import Phaser from "phaser";
 import BoardScene from "./BoardScene";
+import BootScene from "./BootScene";
 
 const config = {
   type: Phaser.AUTO,
   width: 1400,
   height: 752,
   physics: {},
-  scene: [BoardScene],
+  scene: [BootScene, BoardScene],
   parent: 'game-container',
   dom: {
     createContainer: true

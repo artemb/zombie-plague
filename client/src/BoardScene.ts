@@ -11,18 +11,10 @@ export default class BoardScene extends Phaser.Scene {
   socket: SocketIOClient.Socket;
 
   constructor() {
-    super("game-scene");
+    super("Board");
   }
 
   preload() {
-    Board.preload(this);
-    Controls.preLoad(this);
-    Character.preload(this);
-    this.load.image("zombie", c.WEB_PREFIX + "assets/zombie.png");
-    this.load.spritesheet("buttons", c.WEB_PREFIX + "assets/controls.png", {
-      frameWidth: 200,
-      frameHeight: 215,
-    });
     let socket = io("localhost:5000");
     this.socket = socket;
 
