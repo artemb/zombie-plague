@@ -10,7 +10,7 @@ from uuid import uuid4
 
 app: Flask = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
-socketio = SocketIO(app)
+socketio = SocketIO(app, cors_allowed_origins='*')
 
 mgr = GameManager()
 
@@ -18,6 +18,10 @@ mgr = GameManager()
 # zombie1 = Character("zombie1", grid, (2, 2))
 # zombie_index = 1
 
+@app.after_request
+def add_header(response):
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    return response
 
 @app.route('/')
 def index():
