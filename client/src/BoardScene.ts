@@ -15,15 +15,15 @@ export default class BoardScene extends Phaser.Scene {
   }
 
   preload() {
-    let socket = io("localhost:5000");
-    this.socket = socket;
 
-    socket.on("connect", () => {
-      socket.emit("join", { room: "Room 1" });
-    });
   }
 
   create() {
+    this.socket = this.game.registry.get('socket')
+    this.socket.on("connect", () => {
+      this.socket.emit("join", { room: "Room 1" });
+    });
+
     this.board = new Board(
       this,
       +this.game.config.width - Board.BOARD_WIDTH / 2,
