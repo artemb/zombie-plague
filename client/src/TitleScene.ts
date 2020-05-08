@@ -11,6 +11,7 @@ export default class TitleScene extends Phaser.Scene {
 
     create() {
         this.socket = this.game.registry.get('socket')
+        this.checkIfRegistered();
 
         this.createCenteredText('Zombie Plague', 150, 40);
         this.createCenteredText('Hello, stranger. Come join our game.', 300, 28);
@@ -20,6 +21,20 @@ export default class TitleScene extends Phaser.Scene {
         this.createButton(this.scale.width / 2, 550, 'Start game',() => {this.onStartClick()});
     }
 
+    checkIfRegistered() {
+        const player_id = localStorage.getItem('player_id');
+        const player_name = localStorage.getItem('player_name');
+
+        this.socket.on('registration_check', (data) => {
+            if (data['registered']) {
+                this.game.registry.set('player_id', player_id);
+                this.scene.start('Board');
+            }
+        });
+
+        this.socket.emit('check_registration', {player_id, player_name});
+    }
+
     onStartClick() {
         // @ts-ignore
         let username = this.usernameField.getChildByID('user-name').value;
@@ -27,8 +42,10 @@ export default class TitleScene extends Phaser.Scene {
             this.errorText.setVisible(true);
             return;
         }
-        this.socket.emit("join", { username: username, room: "Room 1" });
+        this.socket.emit("join", { username: username, player_id: window.localStorage.getItem('player_id')});
         this.socket.on('joined', (data) => {
+            localStorage.setItem('player_id', data['player_id'])
+            localStorage.setItem('player_name', username);
             this.game.registry.set('player_id', data['player_id']);
             this.scene.start('Board');
         });

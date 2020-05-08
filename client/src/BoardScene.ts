@@ -19,8 +19,11 @@ export default class BoardScene extends Phaser.Scene {
       +this.game.config.height / 2
     );
 
+    this.socket = this.game.registry.get('socket');
+
     let zombie = new Character(this, this.board, this.game.registry.get('player_id'), 'char');
-    zombie.position([3, 3]);
+
+    this.socket.emit('update', {action: null});
 
     this.controls = new Controls(this, 0, 0, zombie);
   }
