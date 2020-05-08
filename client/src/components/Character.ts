@@ -6,7 +6,6 @@ export default class Character extends Phaser.GameObjects.Sprite {
     board: Board;
     address: number[] = [1, 1];
     _heading: Heading = Headings.RIGHT;
-    socket: SocketIOClient.Socket;
     char_id: string;
     frameName: string = 'char';
 
@@ -29,9 +28,7 @@ export default class Character extends Phaser.GameObjects.Sprite {
     }
 
     private setUpSocketEvents() {
-        this.socket = this.scene.game.registry.get('socket');
-
-        this.socket.on("message", (data: object) => {
+        this.scene.events.on('gamestatechange', (data) => {
             this.position(data["characters"][this.char_id]["address"], true);
             let direction = data["characters"][this.char_id]["direction"];
             this.heading = Headings[direction];

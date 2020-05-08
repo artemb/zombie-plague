@@ -24,7 +24,16 @@ export default class BoardScene extends Phaser.Scene {
     let zombie = new Character(this, this.board, this.game.registry.get('player_id'), 'char');
 
     this.socket.emit('update', {action: null});
+    this.socket.on('message', (data) => this.onServerUpdate(data));
 
     this.controls = new Controls(this, 0, 0, zombie);
   }
+
+  onServerUpdate(data) {
+    const characters = data['characters'];
+    this.data.set('characters', characters);
+    this.events.emit('gamestatechange', {characters});
+  }
+
+
 }
