@@ -3,11 +3,12 @@ from game.enums import Direction, Step, Turn
 
 
 class Character():
-    def __init__(self, name: str, grid, address: Tuple, direction: Direction = Direction.DOWN):
+    def __init__(self, name: str, grid, face: str, address: Tuple, direction: Direction = Direction.DOWN):
         self.grid = grid
         self.address = address
         self.name = name
         self.direction = direction
+        self.face = face
 
         grid.add_character(self)
 

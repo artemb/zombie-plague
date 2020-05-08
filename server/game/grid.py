@@ -54,7 +54,8 @@ class Grid():
         for char in self.characters:
             state['characters'][char.name] = {
                 "address": char.address,
-                "direction": char.direction.value
+                "direction": char.direction.value,
+                "face": char.face
             }
 
         return state
