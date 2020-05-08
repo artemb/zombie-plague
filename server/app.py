@@ -34,22 +34,17 @@ def check_registration(data):
     if is_registered:
         session['player_id'] = player_id
 
+    app.logger.info(f"Registration check for {player_id} returned {is_registered}")
     emit('registration_check', {'registered': is_registered})
 
 
-@socketio.on('join')
-def on_join(data):
-    # registering the player
-    player_id = data['player_id']
-    if player_id is None or not mgr.is_player_registered(player_id):
-        player_id = str(uuid4())
-        player_name = data['username']
-        session['player_id'] = player_id
-        mgr.register_player(player_id, player_name)
-        app.logger.info(f"Registered {player_name} at {player_id}")  # pylint: disable=no-member
-    else:
-        app.logger.info(f"Returning player {player_id}")
-        session['player_id'] = player_id
+@socketio.on('register')
+def register(data):
+    player_id = str(uuid4())
+    player_name = data['username']
+    session['player_id'] = player_id
+    mgr.register_player(player_id, player_name)
+    app.logger.info(f"Registered {player_name} at {player_id}")  # pylint: disable=no-member
 
     emit('joined', {'player_id': player_id})
 
