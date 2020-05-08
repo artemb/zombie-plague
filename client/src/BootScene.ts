@@ -9,9 +9,9 @@ export default class BootScene extends Phaser.Scene {
     }
 
     preload() {
-        Board.preload(this);
-        Controls.preLoad(this);
-        Character.preload(this);
+        Board.preload(this, c.WEB_PREFIX);
+        Controls.preload(this, c.WEB_PREFIX);
+        Character.preload(this, c.WEB_PREFIX);
 
         this.load.image("zombie", c.WEB_PREFIX + "assets/zombie.png");
         this.load.spritesheet("buttons", c.WEB_PREFIX + "assets/controls.png", {

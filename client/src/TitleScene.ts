@@ -29,7 +29,7 @@ export default class TitleScene extends Phaser.Scene {
         }
         this.socket.emit("join", { username: username, room: "Room 1" });
         this.socket.on('joined', (data) => {
-            this.data.set('player_id', data['player_id']);
+            this.game.registry.set('player_id', data['player_id']);
             this.scene.start('Board');
         });
     }

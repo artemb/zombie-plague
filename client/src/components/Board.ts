@@ -1,6 +1,5 @@
 import Phaser from "phaser";
 import Grid from "./Grid";
-import c from "./consts";
 
 const GRID_WIDTH = 24;
 const GRID_HEIGHT = 20;
@@ -66,8 +65,8 @@ export default class BoardScene extends Phaser.GameObjects.Container {
     this.add(scene.add.image(0, 0, "board"));
   }
 
-  static preload(scene: Phaser.Scene) {
-    scene.load.image("board", c.WEB_PREFIX + "assets/board.png");
+  static preload(scene: Phaser.Scene, prefix: string) {
+    scene.load.image("board", prefix + "assets/board.png");
   }
 
   is_blocked(from: integer[], to: integer[]) {
