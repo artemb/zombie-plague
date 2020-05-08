@@ -25,7 +25,7 @@ const config = {
 class Game extends Phaser.Game {
   constructor(config) {
     super(config);
-    const socket:SocketIOClient.Socket = io('http://localhost:5000');
+    const socket:SocketIOClient.Socket = io(location.hostname + ':5000');
     const stateManager = new StateManager(socket);
     this.registry.set('stateManager', stateManager);
     this.registry.set('socket', socket);

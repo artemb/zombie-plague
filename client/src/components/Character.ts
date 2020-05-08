@@ -22,6 +22,7 @@ export default class Character extends Phaser.GameObjects.Sprite {
         this.board = board;
         this.frameName = frameName;
         this.char_id = char_id;
+        this.name = char_id;
         this.stateManager = stateManager;
 
         scene.add.existing(this);
@@ -31,11 +32,13 @@ export default class Character extends Phaser.GameObjects.Sprite {
     }
 
     private setupEvents() {
-        this.stateManager.on('gamestatechange', () => {
-            this.position(this.stateManager.characters[this.char_id]["address"], true);
-            let direction = this.stateManager.characters[this.char_id]["direction"];
-            this.heading = Headings[direction];
-        });
+        this.stateManager.on('gamestatechange', () => this.updateState());
+    }
+
+    updateState(initial=false) {
+        this.position(this.stateManager.characters[this.char_id]["address"], !initial);
+        let direction = this.stateManager.characters[this.char_id]["direction"];
+        this.heading = Headings[direction];
     }
 
     set heading(heading: Heading) {
