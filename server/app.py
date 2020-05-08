@@ -61,7 +61,7 @@ def on_update(data):
         f"Sending state {mgr.state()}"
     )
 
-    send(mgr.state())
+    socketio.send(mgr.state())
 
 
 if __name__ == '__main__':
