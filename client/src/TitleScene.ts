@@ -1,16 +1,16 @@
 import Phaser from 'phaser';
-import SocketIOClient from 'socket.io-client'
+import StateManager from "./components/StateManager";
 
 export default class TitleScene extends Phaser.Scene {
     private errorText: Phaser.GameObjects.Text;
     private usernameField: Phaser.GameObjects.DOMElement;
-    private socket: SocketIOClient.Socket;
+    private stateManager: StateManager;
     constructor() {
         super('Title');
     }
 
     create() {
-        this.socket = this.game.registry.get('socket')
+        this.stateManager = this.game.registry.get('stateManager');
         this.checkIfRegistered();
 
         this.createCenteredText('Zombie Plague', 150, 40);
@@ -23,16 +23,13 @@ export default class TitleScene extends Phaser.Scene {
 
     checkIfRegistered() {
         const player_id = localStorage.getItem('player_id');
-        const player_name = localStorage.getItem('player_name');
 
-        this.socket.on('registration_check', (data) => {
-            if (data['registered']) {
-                this.game.registry.set('player_id', player_id);
+        this.stateManager.checkRegistration(player_id).then((is_registered) => {
+            if (is_registered) {
                 this.scene.start('Board');
             }
         });
 
-        this.socket.emit('check_registration', {player_id, player_name});
     }
 
     onStartClick() {
@@ -42,11 +39,7 @@ export default class TitleScene extends Phaser.Scene {
             this.errorText.setVisible(true);
             return;
         }
-        this.socket.emit("join", { username: username, player_id: window.localStorage.getItem('player_id')});
-        this.socket.on('joined', (data) => {
-            localStorage.setItem('player_id', data['player_id'])
-            localStorage.setItem('player_name', username);
-            this.game.registry.set('player_id', data['player_id']);
+        this.stateManager.registerPlayer(username).then(() => {
             this.scene.start('Board');
         });
     }

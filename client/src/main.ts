@@ -3,6 +3,7 @@ import BoardScene from "./BoardScene";
 import BootScene from "./BootScene";
 import TitleScene from "./TitleScene";
 import io from 'socket.io-client'
+import StateManager from "./components/StateManager";
 
 const config = {
   type: Phaser.AUTO,
@@ -22,10 +23,11 @@ const config = {
 };
 
 class Game extends Phaser.Game {
-  private socket: SocketIOClient.Socket;
   constructor(config) {
     super(config);
-    const socket = io('http://localhost:5000');
+    const socket:SocketIOClient.Socket = io('http://localhost:5000');
+    const stateManager = new StateManager(socket);
+    this.registry.set('stateManager', stateManager);
     this.registry.set('socket', socket);
   }
 }

@@ -1,6 +1,7 @@
 import Phaser from "phaser";
 import Board from "./Board";
 import {Heading, Headings} from "./Heading";
+import StateManager from "./StateManager";
 
 export default class Character extends Phaser.GameObjects.Sprite {
     board: Board;
@@ -8,6 +9,7 @@ export default class Character extends Phaser.GameObjects.Sprite {
     _heading: Heading = Headings.RIGHT;
     char_id: string;
     frameName: string = 'char';
+    private stateManager: StateManager;
 
     static preload(scene: Phaser.Scene, prefix: string) {
         scene.load.image('char-down', prefix + 'assets/chars/2.1idle.gif')
@@ -15,22 +17,23 @@ export default class Character extends Phaser.GameObjects.Sprite {
         scene.load.image('char-up', prefix + 'assets/chars/2.3idle.gif')
     }
 
-    constructor(scene: Phaser.Scene, board: Board, char_id: string, frameName: string) {
+    constructor(scene: Phaser.Scene, board: Board, char_id: string, frameName: string, stateManager: StateManager) {
         super(scene, 0, 0, frameName + '-down');
         this.board = board;
         this.frameName = frameName;
         this.char_id = char_id;
+        this.stateManager = stateManager;
 
         scene.add.existing(this);
         board.add(this);
 
-        this.setUpSocketEvents();
+        this.setupEvents();
     }
 
-    private setUpSocketEvents() {
-        this.scene.events.on('gamestatechange', (data) => {
-            this.position(data["characters"][this.char_id]["address"], true);
-            let direction = data["characters"][this.char_id]["direction"];
+    private setupEvents() {
+        this.stateManager.on('gamestatechange', () => {
+            this.position(this.stateManager.characters[this.char_id]["address"], true);
+            let direction = this.stateManager.characters[this.char_id]["direction"];
             this.heading = Headings[direction];
         });
     }

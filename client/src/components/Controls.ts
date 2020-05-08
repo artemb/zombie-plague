@@ -1,7 +1,7 @@
 import Phaser from "phaser";
 import Board from "./Board";
 import Character from "./Character";
-import SocketIOClient from "socket.io-client";
+import StateManager from "./StateManager";
 
 enum Action {
   FORWARD = "FORWARD",
@@ -12,13 +12,13 @@ enum Action {
 
 export default class Controls extends Phaser.GameObjects.Container {
   zombie: Character;
-  socket: SocketIOClient.Socket;
+  private stateManager: StateManager;
 
   static preload(scene:Phaser.Scene, prefix: string) {
     scene.load.html('nameform', prefix + 'assets/username.html')
   }
 
-  constructor(scene: Phaser.Scene, x: integer, y: integer, character: Character) {
+  constructor(scene: Phaser.Scene, x: integer, y: integer, character: Character, stateManager: StateManager) {
     // Initialize the controls container
     super(scene, x, y);
     this.setSize(
@@ -27,7 +27,7 @@ export default class Controls extends Phaser.GameObjects.Container {
     );
     scene.add.existing(this);
 
-    this.socket = scene.game.registry.get('socket');
+    this.stateManager = stateManager;
 
     this.drawControls(character)
   }
@@ -48,7 +48,7 @@ export default class Controls extends Phaser.GameObjects.Container {
   }
 
   sendUpdate(character: Character, action: Action) {
-    this.socket.emit("update", { character: character.char_id, action: action });
+    this.stateManager.update(character.char_id, action);
   }
 
   create_button(x: integer, y: integer, frame: integer, onPointerDown: Function) {

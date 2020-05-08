@@ -2,11 +2,12 @@ import Phaser from "phaser";
 import Board from "./components/Board";
 import Character from "./components/Character";
 import Controls from "./components/Controls";
+import StateManager from "./components/StateManager";
 
 export default class BoardScene extends Phaser.Scene {
-  board: Board;
-  controls: Controls;
-  socket: SocketIOClient.Socket;
+  private board: Board;
+  private controls: Controls;
+  private stateManager: StateManager;
 
   constructor() {
     super("Board");
@@ -19,21 +20,11 @@ export default class BoardScene extends Phaser.Scene {
       +this.game.config.height / 2
     );
 
-    this.socket = this.game.registry.get('socket');
+    this.stateManager = this.game.registry.get('stateManager');
 
-    let zombie = new Character(this, this.board, this.game.registry.get('player_id'), 'char');
+    let zombie = new Character(this, this.board, this.stateManager.playerId, 'char', this.stateManager);
+    this.controls = new Controls(this, 0, 0, zombie, this.stateManager);
 
-    this.socket.emit('update', {action: null});
-    this.socket.on('message', (data) => this.onServerUpdate(data));
-
-    this.controls = new Controls(this, 0, 0, zombie);
+    this.stateManager.update();
   }
-
-  onServerUpdate(data) {
-    const characters = data['characters'];
-    this.data.set('characters', characters);
-    this.events.emit('gamestatechange', {characters});
-  }
-
-
 }
