@@ -58,18 +58,18 @@ class TestGrid(unittest.TestCase):
         grid = Grid(5, 5)
         self.assertEqual(len(grid.characters), 0)
 
-        char = Character("zombie1", grid, (1, 1))
+        char = Character("zombie1", grid, 'face1', (1, 1))
         self.assertEqual(len(grid.characters), 1)
         self.assertEqual(grid.characters[0], char)
 
-        Character("zombie2", grid, (2, 2))
+        Character("zombie2", grid, 'face1', (2, 2))
         self.assertEquals(len(grid.characters), 2)
 
     def test_state(self):
 
         grid = Grid(5, 5)
-        Character("zombie1", grid, (1, 1), Direction.LEFT)
-        Character("zombie2", grid, (2, 3))
+        Character("zombie1", grid, 'char1', (1, 1), Direction.LEFT)
+        Character("zombie2", grid, 'char1', (2, 3))
 
         state = grid.state()
 

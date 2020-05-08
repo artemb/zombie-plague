@@ -8,12 +8,12 @@ class TestCharacter(unittest.TestCase):
 
     def test_facing_cell(self):
         grid = Grid(5, 5)
-        char = Character("test", grid, (3, 3), Direction.DOWN)
+        char = Character("test", grid, 'char1', (3, 3), Direction.DOWN)
 
         self.assertEqual(char.facing_cell(Step.FORWARD), (3, 4))
         self.assertEqual(char.facing_cell(Step.BACKWARD), (3, 2))
 
-        char = Character("test2", grid, (2, 2), Direction.RIGHT)
+        char = Character("test2", grid, 'char1', (2, 2), Direction.RIGHT)
 
         self.assertEqual(char.facing_cell(Step.FORWARD), (3, 2))
         self.assertEqual(char.facing_cell(Step.BACKWARD), (1, 2))
@@ -21,7 +21,7 @@ class TestCharacter(unittest.TestCase):
 
     def test_new_character(self):
         grid = Grid(5, 5)
-        char = Character("Bob", grid, (3, 3), Direction.DOWN)
+        char = Character("Bob", grid, 'char1', (3, 3), Direction.DOWN)
 
         self.assertEqual(char.address, (3, 3))
         self.assertEqual(char.name, "Bob")
@@ -29,7 +29,7 @@ class TestCharacter(unittest.TestCase):
         self.assertEqual(char.grid, grid)
 
         grid = Grid(1, 1)
-        char = Character("Stacey", grid, (1, 1), Direction.UP)
+        char = Character("Stacey", grid, 'char1', (1, 1), Direction.UP)
 
         self.assertEqual(char.name, "Stacey")
         self.assertEqual(char.address, (1, 1))
@@ -38,7 +38,7 @@ class TestCharacter(unittest.TestCase):
 
     def test_character_turns(self):
         grid = Grid(5, 5)
-        char = Character("zombie", grid, (3, 3), Direction.DOWN)
+        char = Character("zombie", grid, 'char1', (3, 3), Direction.DOWN)
 
         char.turn(Turn.LEFT)
 
@@ -50,7 +50,7 @@ class TestCharacter(unittest.TestCase):
 
     def test_character_steps(self):
         grid = Grid(5, 5)
-        char = Character("zombie", grid, (3, 3), Direction.DOWN)
+        char = Character("zombie", grid, 'char1', (3, 3), Direction.DOWN)
 
         char.step(Step.FORWARD)
         self.assertEqual(char.address, (3, 4))
@@ -58,7 +58,7 @@ class TestCharacter(unittest.TestCase):
         char.step(Step.BACKWARD)
         self.assertEqual(char.address, (3, 3))
 
-        char = Character("human", grid, (2, 2), Direction.RIGHT)
+        char = Character("human", grid, 'char1', (2, 2), Direction.RIGHT)
 
         char.step(Step.FORWARD)
         self.assertEqual(char.address, (3, 2))
