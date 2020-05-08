@@ -12,9 +12,22 @@ export default class Character extends Phaser.GameObjects.Sprite {
     private stateManager: StateManager;
 
     static preload(scene: Phaser.Scene, prefix: string) {
-        scene.load.image('char-down', prefix + 'assets/chars/2.1idle.gif')
-        scene.load.image('char-right', prefix + 'assets/chars/2.2idle.gif')
-        scene.load.image('char-up', prefix + 'assets/chars/2.3idle.gif')
+        scene.load.image('char1-down', prefix + 'assets/chars/2.1idle.gif')
+        scene.load.image('char1-right', prefix + 'assets/chars/2.2idle.gif')
+        scene.load.image('char1-up', prefix + 'assets/chars/2.3idle.gif')
+
+        scene.load.image('char2-down', prefix + 'assets/chars/1.1idle.gif')
+        scene.load.image('char2-right', prefix + 'assets/chars/1.2idle.gif')
+        scene.load.image('char2-up', prefix + 'assets/chars/1.3idle.gif')
+
+        scene.load.image('char3-down', prefix + 'assets/chars/3.1idle.gif')
+        scene.load.image('char3-right', prefix + 'assets/chars/3.2idle.gif')
+        scene.load.image('char3-up', prefix + 'assets/chars/3.4idle.gif')
+
+        scene.load.image('char4-down', prefix + 'assets/chars/4.1idle.gif')
+        scene.load.image('char4-right', prefix + 'assets/chars/4.2idle.gif')
+        scene.load.image('char4-up', prefix + 'assets/chars/4.3idle.gif')
+
     }
 
     constructor(scene: Phaser.Scene, board: Board, char_id: string, frameName: string, stateManager: StateManager) {
