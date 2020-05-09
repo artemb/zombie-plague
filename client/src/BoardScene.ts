@@ -33,13 +33,13 @@ export default class BoardScene extends Phaser.Scene {
         continue;
       }
 
-      console.log({ char });
       if (!this.board.getByName(char)) {
         let char_data = this.stateManager.characters[char];
         let zombie = new Character(this, this.board, char, char_data['face'], this.stateManager);
         zombie.updateState(true);
         if (char == this.stateManager.playerId && !this.controls) {
           this.controls = new Controls(this, 0, 0, zombie, this.stateManager);
+          this.controls.onGameStateUpdate();
         }
       }
     }

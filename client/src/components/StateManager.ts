@@ -5,6 +5,7 @@ export default class StateManager extends Phaser.Events. EventEmitter {
     private socket: SocketIOClient.Socket;
     playerId: string;
     characters: object;
+    turn: object;
 
     constructor(socket) {
         super();
@@ -48,6 +49,7 @@ export default class StateManager extends Phaser.Events. EventEmitter {
 
     private onServerUpdate(data) {
         this.characters = data['grid']['characters'];
+        this.turn = data['turn'];
         this.emit('gamestatechange', this);
     }
 }

@@ -13,6 +13,7 @@ enum Action {
 export default class Controls extends Phaser.GameObjects.Container {
   zombie: Character;
   private stateManager: StateManager;
+  private btn_group: Phaser.GameObjects.Group;
 
   static preload(scene:Phaser.Scene, prefix: string) {
     scene.load.html('nameform', prefix + 'assets/username.html')
@@ -28,23 +29,32 @@ export default class Controls extends Phaser.GameObjects.Container {
     scene.add.existing(this);
 
     this.stateManager = stateManager;
+    this.stateManager.on('gamestatechange', () => this.onGameStateUpdate());
 
     this.drawControls(character)
   }
 
   drawControls(character) {
-    this.create_button(50, 50, 1, () =>
+    this.btn_group = this.scene.add.group();
+    let btn = this.create_button(50, 50, 1, () =>
         this.sendUpdate(character, Action.LEFT)
     );
-    this.create_button(120, 50, 4, () =>
+    this.btn_group.add(btn);
+
+    btn = this.create_button(120, 50, 4, () =>
         this.sendUpdate(character, Action.RIGHT)
     );
-    this.create_button(50, 120, 2, () =>
+    this.btn_group.add(btn);
+
+    btn = this.create_button(50, 120, 2, () =>
         this.sendUpdate(character, Action.FORWARD)
     );
-    this.create_button(120, 120, 3, () =>
+    this.btn_group.add(btn);
+
+    btn = this.create_button(120, 120, 3, () =>
         this.sendUpdate(character, Action.BACKWARD)
     );
+    this.btn_group.add(btn);
   }
 
   sendUpdate(character: Character, action: Action) {
@@ -60,5 +70,12 @@ export default class Controls extends Phaser.GameObjects.Container {
     this.add(btn);
 
     return btn;
+  }
+
+  onGameStateUpdate() {
+    this.btn_group.setVisible(false);
+    if (this.stateManager.turn['activePlayer'] == this.stateManager.playerId) {
+      this.btn_group.setVisible(true);
+    }
   }
 }
