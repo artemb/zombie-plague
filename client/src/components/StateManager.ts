@@ -47,12 +47,16 @@ export default class StateManager extends Phaser.Events. EventEmitter {
         this.socket.emit('update', { character, action });
     }
 
-    isOurTurn() {
-        return this.isPlayersTurn(this.playerId);
-    }
+    // isOurTurn() {
+    //     return this.isPlayersTurn(this.playerId);
+    // }
 
-    isPlayersTurn(playerId) {
-        return this.turn['activePlayer'] == playerId;
+    // isPlayersTurn(playerId) {
+    //     return this.turn['activePlayer'] == playerId;
+    // }
+
+    isCharactersTurn(characterId) {
+        return this.turn['activeCharacter'] == characterId;
     }
 
     private onServerUpdate(data) {

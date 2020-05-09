@@ -11,7 +11,7 @@ enum Action {
 }
 
 export default class Controls extends Phaser.GameObjects.Container {
-  zombie: Character;
+  character: Character;
   private stateManager: StateManager;
   private btn_group: Phaser.GameObjects.Group;
   private turnLabel: Phaser.GameObjects.Text;
@@ -29,6 +29,7 @@ export default class Controls extends Phaser.GameObjects.Container {
       +scene.game.config.height
     );
     scene.add.existing(this);
+    this.character = character;
 
     this.stateManager = stateManager;
     this.stateManager.on('gamestatechange', () => this.onGameStateUpdate());
@@ -91,7 +92,7 @@ export default class Controls extends Phaser.GameObjects.Container {
 
   onGameStateUpdate() {
     this.btn_group.setVisible(false);
-    if (this.stateManager.isOurTurn()) {
+    if (this.stateManager.isCharactersTurn(this.character.char_id)) {
       this.turnLabel.setText('Your turn');
       this.btn_group.setVisible(true);
     } else {

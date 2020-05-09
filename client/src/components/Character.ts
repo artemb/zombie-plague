@@ -54,7 +54,7 @@ export default class Character extends Phaser.GameObjects.Sprite {
         this.position(this.stateManager.characters[this.char_id]["address"], !initial);
         let direction = this.stateManager.characters[this.char_id]["direction"];
         this.heading = Headings[direction];
-        if (this.stateManager.isPlayersTurn(this.player_id)) {
+        if (this.stateManager.isCharactersTurn(this.char_id)) {
             this.setAlpha(1);
         } else {
             this.setAlpha(0.9, 0.9, 0.5, 0.5)

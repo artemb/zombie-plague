@@ -28,14 +28,14 @@ export default class BoardScene extends Phaser.Scene {
   }
 
   onStateUpdate() {
-    for (let char in this.stateManager.characters) {
-      if (!this.stateManager.characters.hasOwnProperty(char)) {
+    for (let char_id in this.stateManager.characters) {
+      if (!this.stateManager.characters.hasOwnProperty(char_id)) {
         continue;
       }
 
-      if (!this.board.getByName(char)) {
-        let char_data = this.stateManager.characters[char];
-        let character = new Character(this, this.board, char_data['player_id'], char, char_data['face'], this.stateManager);
+      if (!this.board.getByName(char_id)) {
+        let char_data = this.stateManager.characters[char_id];
+        let character = new Character(this, this.board, char_data['player_id'], char_id, char_data['face'], this.stateManager);
         character.updateState(true);
         if (char_data['player_id'] == this.stateManager.playerId && !this.controls) {
           this.controls = new Controls(this, 0, 0, character, this.stateManager);
