@@ -74,7 +74,7 @@ export default class Controls extends Phaser.GameObjects.Container {
 
   onGameStateUpdate() {
     this.btn_group.setVisible(false);
-    if (this.stateManager.turn['activePlayer'] == this.stateManager.playerId) {
+    if (this.stateManager.isOurTurn()) {
       this.btn_group.setVisible(true);
     }
   }
