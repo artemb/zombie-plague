@@ -47,7 +47,7 @@ export default class StateManager extends Phaser.Events. EventEmitter {
     }
 
     private onServerUpdate(data) {
-        this.characters = data['characters'];
+        this.characters = data['grid']['characters'];
         this.emit('gamestatechange', this);
     }
 }
