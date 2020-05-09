@@ -1,22 +1,22 @@
 class TurnManager:
     def __init__(self, max_ap):
-        self.players = []
+        self.characters = []
         self.max_ap = max_ap
-        self.active_player_index = 0
+        self.active_character_index = 0
         self.current_turn_ap = max_ap
 
-    def add_player(self, player):
-        self.players += [player]
+    def add_character(self, character):
+        self.characters += [character]
 
-    def current_player(self):
-        return self.players[self.active_player_index]
+    def current_character(self):
+        return self.characters[self.active_character_index]
 
-    def current_player_id(self):
-        return self.current_player().id
+    def current_character_id(self):
+        return self.current_character().char_id
 
     def end_turn(self):
-        self.active_player_index += 1
-        self.active_player_index %= len(self.players)
+        self.active_character_index += 1
+        self.active_character_index %= len(self.characters)
         self.current_turn_ap = self.max_ap
 
     def remaining_ap(self):
@@ -29,6 +29,6 @@ class TurnManager:
 
     def state(self):
         return {
-            'activePlayer': self.current_player_id(),
+            'activeCharacter': self.current_character_id(),
             'remainingAP': self.remaining_ap()
         }

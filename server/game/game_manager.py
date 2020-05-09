@@ -19,13 +19,13 @@ class GameManager:
     def register_player(self, id: str, name: str):
         player = Player(self.game, id, name)
         self.players[id] = player
-        self.turn_manager.add_player(player)
         char = player.create_character(
             (randint(1, 24), randint(1, 20)),
             choice(list(Direction)),
             self.char_faces.pop()
         )
         self.chars[char.char_id] = char
+        self.turn_manager.add_character(char)
 
     def is_player_registered(self, player_id):
         return player_id in self.players.keys()
@@ -33,7 +33,7 @@ class GameManager:
     def action(self, char_id, data):
         # Checking if it is the player's turn
         char = self.chars[char_id]
-        if char is None or self.turn_manager.current_player_id() != char.player_id:
+        if char is None or self.turn_manager.current_character_id() != char_id:
             return
 
         if data['action'] in (Action.STEP_FORWARD.value, Action.STEP_BACKWARD.value):
