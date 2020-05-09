@@ -8,6 +8,7 @@ export default class Character extends Phaser.GameObjects.Sprite {
     address: number[] = [1, 1];
     _heading: Heading = Headings.RIGHT;
     char_id: string;
+    player_id: string;
     frameName: string = 'char';
     private stateManager: StateManager;
 
@@ -30,10 +31,11 @@ export default class Character extends Phaser.GameObjects.Sprite {
 
     }
 
-    constructor(scene: Phaser.Scene, board: Board, char_id: string, frameName: string, stateManager: StateManager) {
+    constructor(scene: Phaser.Scene, board: Board, player_id: string, char_id: string, frameName: string, stateManager: StateManager) {
         super(scene, 0, 0, frameName + '-down');
         this.board = board;
         this.frameName = frameName;
+        this.player_id = player_id;
         this.char_id = char_id;
         this.name = char_id;
         this.stateManager = stateManager;
@@ -52,7 +54,7 @@ export default class Character extends Phaser.GameObjects.Sprite {
         this.position(this.stateManager.characters[this.char_id]["address"], !initial);
         let direction = this.stateManager.characters[this.char_id]["direction"];
         this.heading = Headings[direction];
-        if (this.stateManager.isPlayersTurn(this.char_id)) {
+        if (this.stateManager.isPlayersTurn(this.player_id)) {
             this.setAlpha(1);
         } else {
             this.setAlpha(0.9, 0.9, 0.5, 0.5)
