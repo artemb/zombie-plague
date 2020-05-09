@@ -4,6 +4,7 @@ from game.enums import Direction, Action, Step, Turn
 from game.grid import Grid
 from game.game import Game
 from game.grid_def import OBSTACLES, WALLS
+from game.turns import TurnManager
 
 
 class GameManager:
@@ -12,10 +13,12 @@ class GameManager:
         self.char_faces = ['char1', 'char2', 'char3', 'char4']
         self.game = Game(grid)
         self.players = {}
+        self.turn_manager = TurnManager(4)
 
     def register_player(self, id: str, name: str):
         player = Player(self.game, id, name)
         self.players[id] = player
+        self.turn_manager.add_player(player)
         player.create_character(
             (randint(1, 24), randint(1, 20)),
             choice(list(Direction)),
@@ -26,11 +29,17 @@ class GameManager:
         return player_id in self.players.keys()
 
     def action(self, player_id, data):
+        # Checking if it is the player's turn
+        if self.turn_manager.current_player_id() != player_id:
+            return
+
         player = self.players[player_id]
         char = player.characters.copy().pop()
 
         if data['action'] in (Action.STEP_FORWARD.value, Action.STEP_BACKWARD.value):
-            char.step(Step(data['action']))  # pylint: disable=no-value-for-parameter
+            success = char.step(Step(data['action']))  # pylint: disable=no-value-for-parameter
+            if not success:
+                return
 
         if data['action'] == Action.TURN_RIGHT.value:
             char.turn(Turn.RIGHT)
@@ -38,5 +47,10 @@ class GameManager:
         if data['action'] == Action.TURN_LEFT.value:
             char.turn(Turn.LEFT)
 
+        self.turn_manager.spend_ap()
+
     def state(self):
-        return self.game.grid.state()
+        grid = self.game.grid.state()
+        turn = self.turn_manager.state()
+
+        return {'grid': grid, 'turn': turn}

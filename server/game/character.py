@@ -22,6 +22,9 @@ class Character():
         target = self.facing_cell(step)
         if self.grid.can_step(self.address, target):
             self.address = target
+            return True
+
+        return False
 
     def turn(self, turn: Turn = Turn.LEFT):
         self.direction = self.direction.turn(turn)
