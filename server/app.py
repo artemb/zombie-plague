@@ -55,7 +55,7 @@ def on_update(data):
         f"State update from {session['player_id']} request with {data}")
 
     if data['action'] is not None:
-        mgr.action(session['player_id'], data)
+        mgr.action(data['character'], data)
 
     app.logger.info(
         f"Sending state {mgr.state()}"

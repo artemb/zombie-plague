@@ -1,0 +1,18 @@
+0.2
+
+- Separate char IDs and Player IDs
+- Create a game lobby screen where the host assigns characters to players
+- Have that 1 player can control multiple characters
+- The zombie spawn logic
+- Prevent players from stepping on each other
+
+0.3
+
+- Climbing through windows to cost extra AP
+- Zombie bite logic
+- Player attack logic (bare handed)
+- Visualisation of a dice roll
+
+0.4
+
+-

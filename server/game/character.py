@@ -1,12 +1,15 @@
 from typing import Tuple
+from uuid import uuid4
+
 from game.enums import Direction, Step, Turn
 
 
 class Character():
-    def __init__(self, name: str, grid, face: str, address: Tuple, direction: Direction = Direction.DOWN):
+    def __init__(self, player_id: str, grid, face: str, address: Tuple, direction: Direction = Direction.DOWN):
         self.grid = grid
         self.address = address
-        self.name = name
+        self.char_id = str(uuid4())
+        self.player_id = player_id
         self.direction = direction
         self.face = face
 

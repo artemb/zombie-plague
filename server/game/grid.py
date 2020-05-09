@@ -52,7 +52,8 @@ class Grid():
     def state(self):
         state = {'characters': {}}
         for char in self.characters:
-            state['characters'][char.name] = {
+            state['characters'][char.char_id] = {
+                "player_id": char.player_id,
                 "address": char.address,
                 "direction": char.direction.value,
                 "face": char.face
