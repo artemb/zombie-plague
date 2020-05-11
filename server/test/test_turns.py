@@ -1,20 +1,18 @@
 import unittest
 
 from game.character import Character
-from game.game import Game
 from game.grid import Grid
-from game.player import Player
 from game.turns import TurnManager
+from test.my_base import MyBaseTestCase
 
 
-class TurnsTestCase(unittest.TestCase):
+class TurnsTestCase(MyBaseTestCase):
     
     def setUp(self) -> None:
-        grid = Grid(5, 5)
         self.tm = TurnManager(4)
 
-        self.char1 = Character('player1', grid, 'face', ())
-        self.char2 = Character('player2', grid, 'face', ())
+        self.char1 = self.create_character()
+        self.char2 = self.create_character()
 
         self.tm.add_character(self.char1)
         self.tm.add_character(self.char2)

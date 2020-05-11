@@ -1,23 +1,24 @@
 import unittest
 from unittest.mock import patch
+
+from game.enums import Direction
 from game.grid import Grid
-from game.enums import Direction, Turn, Step
-from game.character import Character
+from test.my_base import MyBaseTestCase
 
 
-class TestGrid(unittest.TestCase):
+class TestGrid(MyBaseTestCase):
 
     def test_size_1(self):
-        grid = Grid(5, 3)
+        grid = self.create_grid(5, 3)
         self.assertEqual(grid.cols, 5)
         self.assertEqual(grid.rows, 3)
 
-        grid = Grid(10, 20)
+        grid = self.create_grid(10, 20)
         self.assertEqual(grid.cols, 10)
         self.assertEqual(grid.rows, 20)
 
     def test_out_of_bounds(self):
-        grid = Grid(5, 5)
+        grid = self.create_grid()
         self.assertFalse(grid.is_out_of_bounds((1, 1)))
         self.assertTrue(grid.is_out_of_bounds((3, 6)))
 
@@ -27,49 +28,23 @@ class TestGrid(unittest.TestCase):
         self.assertTrue(grid.is_out_of_bounds((0, 1)))
         self.assertTrue(grid.is_out_of_bounds((4, 0)))
 
-    def test_turns(self):
-        d = Direction.RIGHT
-
-        d = d.turn(Turn.LEFT)
-        self.assertEqual(d, Direction.UP)
-
-        d = d.turn(Turn.LEFT)
-        self.assertEqual(d, Direction.LEFT)
-
-        d = d.turn(Turn.LEFT)
-        self.assertEqual(d, Direction.DOWN)
-
-        d = d.turn(Turn.LEFT)
-        self.assertEqual(d, Direction.RIGHT)
-
-        d = d.turn(Turn.RIGHT)
-        self.assertEqual(d, Direction.DOWN)
-
-        d = d.turn(Turn.RIGHT)
-        self.assertEqual(d, Direction.LEFT)
-
-        d = d.turn(Turn.RIGHT)
-        self.assertEqual(d, Direction.UP)
-
-        d = d.turn(Turn.RIGHT)
-        self.assertEqual(d, Direction.RIGHT)
-
     def test_grid_characters(self):
-        grid = Grid(5, 5)
+        grid = self.create_grid()
         self.assertEqual(len(grid.characters), 0)
 
-        char = Character("zombie1", grid, 'face1', (1, 1))
+        char = self.create_character(grid=grid)
         self.assertEqual(len(grid.characters), 1)
         self.assertEqual(grid.characters[0], char)
 
-        Character("zombie2", grid, 'face1', (2, 2))
+        char2 = self.create_character(grid=grid)
+
         self.assertEquals(len(grid.characters), 2)
+        self.assertEqual(grid.characters[1], char2)
 
     def test_state(self):
-
-        grid = Grid(5, 5)
-        char1 = Character("player1", grid, 'char1', (1, 1), Direction.LEFT)
-        char2 = Character("player2", grid, 'char1', (2, 3))
+        grid = self.create_grid()
+        char1 = self.create_character(grid=grid, direction=Direction.LEFT, address=(1, 1))
+        char2 = self.create_character(grid=grid, address=(2, 3))
 
         state = grid.state()
 
@@ -80,55 +55,54 @@ class TestGrid(unittest.TestCase):
         self.assertEqual(state['characters'][char2.char_id]['address'], (2, 3))
 
     def test_can_step_oob(self):
-
         with patch.object(Grid, 'is_out_of_bounds', return_value=False) as mock:
-            grid = Grid(5, 5)
+            grid = self.create_grid()
             self.assertTrue(grid.can_step((1, 1), (2, 2)))
 
         mock.assert_called_once_with((2, 2))
 
         with patch.object(Grid, 'is_out_of_bounds', return_value=True) as mock:
-            grid = Grid(5, 5)
+            grid = self.create_grid()
             self.assertFalse(grid.can_step((1, 1), (2, 2)))
 
         mock.assert_called_once_with((2, 2))
 
     def test_is_obstacle(self):
-        grid = Grid(5, 5, [(2, 2), (3, 3)])
+        grid = self.create_grid(5, 5, obstacles=[(2, 2), (3, 3)])
         self.assertTrue(grid.is_obstacle((2, 2)))
         self.assertTrue(grid.is_obstacle((3, 3)))
         self.assertFalse(grid.is_obstacle((1, 1)))
 
     def test_can_step_obstacle(self):
         with patch.object(Grid, 'is_obstacle', return_value=False) as mock:
-            grid = Grid(5,5)
+            grid = self.create_grid()
             self.assertTrue(grid.can_step((1, 1), (1, 2)))
 
         mock.assert_called_once_with((1, 2))
 
         with patch.object(Grid, 'is_obstacle', return_value=True) as mock:
-            grid = Grid(5, 5)
+            grid = self.create_grid()
             self.assertFalse(grid.can_step((1, 1), (1, 2)))
 
         mock.assert_called_once_with((1, 2))
 
     def test_is_wall(self):
-        grid = Grid(5, 5, walls=[((1, 1), (1, 2))])
+        grid = self.create_grid(5, 5, walls=[((1, 1), (1, 2))])
 
-        self.assertTrue(grid.is_wall((1,1), (1, 2)))
+        self.assertTrue(grid.is_wall((1, 1), (1, 2)))
         self.assertTrue(grid.is_wall((1, 2), (1, 1)))
         self.assertFalse(grid.is_wall((1, 1), (2, 1)))
         self.assertFalse(grid.is_wall((1, 2), (2, 2)))
 
     def test_can_step_wall(self):
         with patch.object(Grid, 'is_wall', return_value=False) as mock:
-            grid = Grid(5, 5)
+            grid = self.create_grid()
             self.assertTrue(grid.can_step((1, 1), (1, 2)))
 
         mock.assert_called_once_with((1, 1), (1, 2))
 
         with patch.object(Grid, 'is_wall', return_value=True) as mock:
-            grid = Grid(5, 5)
+            grid = self.create_grid()
             self.assertFalse(grid.can_step((1, 1), (1, 2)))
 
         mock.assert_called_once_with((1, 1), (1, 2))
