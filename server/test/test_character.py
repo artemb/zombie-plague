@@ -24,14 +24,16 @@ class TestCharacter(unittest.TestCase):
         char = Character("Bob", grid, 'char1', (3, 3), Direction.DOWN)
 
         self.assertEqual(char.address, (3, 3))
-        self.assertEqual(char.name, "Bob")
+        self.assertEqual(char.player_id, "Bob")
+        self.assertIsNotNone(char.char_id)
         self.assertEqual(char.direction, Direction.DOWN)
         self.assertEqual(char.grid, grid)
 
         grid = Grid(1, 1)
         char = Character("Stacey", grid, 'char1', (1, 1), Direction.UP)
 
-        self.assertEqual(char.name, "Stacey")
+        self.assertEqual(char.player_id, "Stacey")
+        self.assertIsNotNone(char.char_id)
         self.assertEqual(char.address, (1, 1))
         self.assertEquals(char.direction, Direction.UP)
         self.assertEquals(char.grid, grid)

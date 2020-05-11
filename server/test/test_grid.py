@@ -68,16 +68,16 @@ class TestGrid(unittest.TestCase):
     def test_state(self):
 
         grid = Grid(5, 5)
-        Character("zombie1", grid, 'char1', (1, 1), Direction.LEFT)
-        Character("zombie2", grid, 'char1', (2, 3))
+        char1 = Character("player1", grid, 'char1', (1, 1), Direction.LEFT)
+        char2 = Character("player2", grid, 'char1', (2, 3))
 
         state = grid.state()
 
         self.assertEqual(len(state['characters']), 2)
-        self.assertIn("zombie1", state['characters'].keys())
-        self.assertEqual(state['characters']['zombie1']['address'], (1, 1))
-        self.assertEqual(state['characters']['zombie1']['direction'], 'LEFT')
-        self.assertEqual(state['characters']['zombie2']['address'], (2, 3))
+
+        self.assertEqual(state['characters'][char1.char_id]['address'], (1, 1))
+        self.assertEqual(state['characters'][char1.char_id]['direction'], 'LEFT')
+        self.assertEqual(state['characters'][char2.char_id]['address'], (2, 3))
 
     def test_can_step_oob(self):
 
