@@ -4,35 +4,31 @@ from game.enums import Direction, Turn
 from test.my_base import MyBaseTestCase
 
 
-class DirectionsTestCase(MyBaseTestCase):
+class TestDirection(MyBaseTestCase):
     def test_turns(self):
         d = Direction.RIGHT
 
         d = d.turn(Turn.LEFT)
-        self.assertEqual(d, Direction.UP)
+        assert d == Direction.UP
 
         d = d.turn(Turn.LEFT)
-        self.assertEqual(d, Direction.LEFT)
+        assert d == Direction.LEFT
 
         d = d.turn(Turn.LEFT)
-        self.assertEqual(d, Direction.DOWN)
+        assert d == Direction.DOWN
 
         d = d.turn(Turn.LEFT)
-        self.assertEqual(d, Direction.RIGHT)
+        assert d == Direction.RIGHT
 
         d = d.turn(Turn.RIGHT)
-        self.assertEqual(d, Direction.DOWN)
+        assert d == Direction.DOWN
 
         d = d.turn(Turn.RIGHT)
-        self.assertEqual(d, Direction.LEFT)
+        assert d == Direction.LEFT
 
         d = d.turn(Turn.RIGHT)
-        self.assertEqual(d, Direction.UP)
+        assert d == Direction.UP
 
         d = d.turn(Turn.RIGHT)
-        self.assertEqual(d, Direction.RIGHT)
+        assert d == Direction.RIGHT
 
-
-
-if __name__ == '__main__':
-    unittest.main()

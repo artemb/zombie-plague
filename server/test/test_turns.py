@@ -18,28 +18,28 @@ class TurnsTestCase(MyBaseTestCase):
         self.tm.add_character(self.char2)
 
     def test_turns(self):
-        self.assertEqual(self.tm.current_character_id(), self.char1.char_id)
+        assert self.tm.current_character_id() ==  self.char1.char_id
 
         self.tm.end_turn()
-        self.assertEqual(self.tm.current_character_id(), self.char2.char_id)
+        assert self.tm.current_character_id() ==  self.char2.char_id
 
         self.tm.end_turn()
-        self.assertEqual(self.tm.current_character_id(), self.char1.char_id)
+        assert self.tm.current_character_id() ==  self.char1.char_id
 
     def test_remaining_ap(self):
-        self.assertEqual(self.tm.current_character_id(), self.char1.char_id)
-        self.assertEqual(self.tm.remaining_ap(), 4)
+        assert self.tm.current_character_id() ==  self.char1.char_id
+        assert self.tm.remaining_ap() ==  4
 
         self.tm.spend_ap()
-        self.assertEqual(self.tm.remaining_ap(), 3)
+        assert self.tm.remaining_ap() ==  3
 
         self.tm.spend_ap()
         self.tm.spend_ap()
-        self.assertEqual(self.tm.remaining_ap(), 1)
+        assert self.tm.remaining_ap() ==  1
 
         self.tm.spend_ap()
-        self.assertEqual(self.tm.current_character_id(), self.char2.char_id)
-        self.assertEqual(self.tm.remaining_ap(), 4)
+        assert self.tm.current_character_id() ==  self.char2.char_id
+        assert self.tm.remaining_ap() ==  4
 
 
 if __name__ == '__main__':

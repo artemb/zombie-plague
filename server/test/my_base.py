@@ -7,11 +7,11 @@ from game.grid import Grid
 from game.player import Player
 
 
-class MyBaseTestCase(unittest.TestCase):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.game = None
-        self.player = None
+class MyBaseTestCase():
+    # def __init__(self, *args, **kwargs):
+    #     super().__init__(*args, **kwargs)
+    #     self.game = None
+    #     self.player = None
 
     def create_player(self):
         return Player(self.game, self.random_string(), self.random_string())
