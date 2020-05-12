@@ -13,15 +13,22 @@ class Grid():
     def add_character(self, character: Character):
         self.characters.append(character)
 
-    def can_step(self, addr_from, addr_to):
+    def can_step(self, char, addr_to):
         if self.is_out_of_bounds(addr_to):
             return False
 
         if self.is_obstacle(addr_to):
             return False
 
-        if self.is_wall(addr_from, addr_to):
+        if self.is_wall(char.address, addr_to):
             return False
+
+        for other in self.characters:
+            if char.char_id == other.char_id:
+                continue
+
+            if other.address == addr_to:
+                return False
 
         return True
 

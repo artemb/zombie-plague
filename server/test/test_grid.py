@@ -57,13 +57,15 @@ class TestGrid(MyBaseTestCase):
     def test_can_step_oob(self):
         with patch.object(Grid, 'is_out_of_bounds', return_value=False) as mock:
             grid = self.create_grid()
-            assert grid.can_step((1, 1), (2, 2))
+            char = self.create_character(grid=grid)
+            assert grid.can_step(char, (2, 2))
 
         mock.assert_called_once_with((2, 2))
 
         with patch.object(Grid, 'is_out_of_bounds', return_value=True) as mock:
             grid = self.create_grid()
-            assert not grid.can_step((1, 1), (2, 2))
+            char = self.create_character(grid=grid)
+            assert not grid.can_step(char, (2, 2))
 
         mock.assert_called_once_with((2, 2))
 
@@ -76,13 +78,15 @@ class TestGrid(MyBaseTestCase):
     def test_can_step_obstacle(self):
         with patch.object(Grid, 'is_obstacle', return_value=False) as mock:
             grid = self.create_grid()
-            assert grid.can_step((1, 1), (1, 2))
+            char1 = self.create_character(grid=grid)
+            assert grid.can_step(char1, (1, 2))
 
         mock.assert_called_once_with((1, 2))
 
         with patch.object(Grid, 'is_obstacle', return_value=True) as mock:
             grid = self.create_grid()
-            assert not grid.can_step((1, 1), (1, 2))
+            char1 = self.create_character(grid=grid)
+            assert not grid.can_step(char1, (1, 2))
 
         mock.assert_called_once_with((1, 2))
 
@@ -97,15 +101,25 @@ class TestGrid(MyBaseTestCase):
     def test_can_step_wall(self):
         with patch.object(Grid, 'is_wall', return_value=False) as mock:
             grid = self.create_grid()
-            assert grid.can_step((1, 1), (1, 2))
+            char = self.create_character(grid=grid, address=(1, 1))
+            assert grid.can_step(char, (1, 2))
 
         mock.assert_called_once_with((1, 1), (1, 2))
 
         with patch.object(Grid, 'is_wall', return_value=True) as mock:
             grid = self.create_grid()
-            assert not grid.can_step((1, 1), (1, 2))
+            char = self.create_character(grid=grid, address=(1, 1))
+            assert not grid.can_step(char, (1, 2))
 
         mock.assert_called_once_with((1, 1), (1, 2))
+
+    def test_can_step_other_chars(self):
+        grid = self.create_grid()
+        char1 = self.create_character(grid=grid, address=(2, 2))
+        char2 = self.create_character(grid=grid, address=(2, 3))
+
+        assert not grid.can_step(char1, (2, 3))
+        assert grid.can_step(char1, (3, 2))
 
 
 if __name__ == '__main__':

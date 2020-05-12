@@ -23,7 +23,7 @@ class Character():
 
     def step(self, step: Step):
         target = self.facing_cell(step)
-        if self.grid.can_step(self.address, target):
+        if self.grid.can_step(self, target):
             self.address = target
             return True
 
