@@ -17,6 +17,9 @@ class Player:
         self.characters.add(char)
         return char
 
+    def state(self):
+        return {'name': self.name}
+
 
 class ZombiePlayer(Player):
     def __init__(self, game, id, name):

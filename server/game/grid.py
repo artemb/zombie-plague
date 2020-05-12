@@ -2,7 +2,7 @@ from game.enums import Direction
 from game.character import Character
 
 
-class Grid():
+class Grid:
     def __init__(self, cols, rows, obstacles = [], walls=[]):
         self.cols = cols
         self.rows = rows

@@ -1,10 +1,15 @@
 0.2
 
 + Separate char IDs and Player IDs
++ Refactor tests
++ Refactor to PyTest
++ Prevent players from stepping on each other
++ Move state from game manager to game.
+- Add Action class to control actions within the game
+- Remove game logic from game manager
 - Create a game lobby screen where the host assigns characters to players
 - Have that 1 player can control multiple characters
 - The zombie spawn logic
-- Prevent players from stepping on each other
 
 0.3
 

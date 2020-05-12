@@ -28,6 +28,9 @@ class TurnManager:
             self.end_turn()
 
     def state(self):
+        if len(self.characters) < 1:
+            return {}
+
         return {
             'activeCharacter': self.current_character_id(),
             'remainingAP': self.remaining_ap()
