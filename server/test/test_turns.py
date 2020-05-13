@@ -4,20 +4,25 @@ from game.turns import TurnManager
 
 
 @pytest.fixture
-def setup(game_factory):
-    tm = TurnManager(4)
-
-    char1 = game_factory.create_character()
-    char2 = game_factory.create_character()
-
-    tm.add_character(char1)
-    tm.add_character(char2)
-
-    return tm, char1, char2
+def tm():
+    return TurnManager(4)
 
 
-def test_turns(setup):
-    tm, char1, char2 = setup
+@pytest.fixture
+def char1(tm, game_factory):
+    char = game_factory.create_character()
+    tm.add_character(char)
+    return char
+
+
+@pytest.fixture
+def char2(tm, game_factory):
+    char = game_factory.create_character()
+    tm.add_character(char)
+    return char
+
+
+def test_turns(tm, char1, char2):
     assert tm.current_character_id() == char1.char_id
 
     tm.end_turn()
@@ -27,8 +32,7 @@ def test_turns(setup):
     assert tm.current_character_id() == char1.char_id
 
 
-def test_remaining_ap(setup):
-    tm, char1, char2 = setup
+def test_remaining_ap(tm, char1, char2):
     assert tm.current_character_id() == char1.char_id
     assert tm.remaining_ap() == 4
 
@@ -44,8 +48,7 @@ def test_remaining_ap(setup):
     assert tm.remaining_ap() == 4
 
 
-def test_spend_many_ap(setup):
-    tm, char1, char2 = setup
+def test_spend_many_ap(tm, char1, char2):
     assert tm.remaining_ap() == 4
     tm.spend_ap(3)
     assert tm.remaining_ap() == 1
