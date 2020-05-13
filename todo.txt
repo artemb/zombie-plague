@@ -6,14 +6,15 @@
 + Prevent players from stepping on each other
 + Move state from game manager to game.
 + Add Action class to control actions within the game
-- Create a test to play a whole game using just the Game class
-- Remove game logic from game manager
-- Create a game lobby screen where the host assigns characters to players
-- Have that 1 player can control multiple characters
-- The zombie spawn logic
++ Create a test to play a whole game using just the Game class
+- Remove game logic from game manager and write a test for it
+- Update client to the new API
 
 0.3
 
+- Create a game lobby screen where the host assigns characters to players
+- Have that 1 player can control multiple characters
+- The zombie spawn logic
 - Climbing through windows to cost extra AP
 - Zombie bite logic
 - Player attack logic (bare handed)

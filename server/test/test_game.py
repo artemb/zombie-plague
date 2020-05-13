@@ -56,7 +56,7 @@ class TestGame(MyBaseTestCase):
         assert state['status'] == 'STARTED'
 
     def test_state_players(self):
-        player = self.create_player(game=self.game)
+        player = self.create_player()
 
         self.game.add_player(player)
 

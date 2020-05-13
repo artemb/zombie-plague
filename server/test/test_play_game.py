@@ -11,11 +11,11 @@ from game.player import Player
 def test_play(game_factory):
     game = Game(Grid(20, 20))
 
-    player1 = Player(game, Faker().pystr(), Faker().name())
-    player2 = Player(game, Faker().pystr(), Faker().name())
+    player1 = Player(Faker().pystr(), Faker().name())
+    player2 = Player(Faker().pystr(), Faker().name())
 
-    # char1 = player1.create_character((1, 1), Direction.DOWN, 'char1')
-    # char2 = player2.create_character((1, 2), Direction.UP, 'char2')
+    game.add_player(player1)
+    game.add_player(player2)
 
     char1 = Character(Faker().pystr())
     char2 = Character(Faker().pystr())

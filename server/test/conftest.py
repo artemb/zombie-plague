@@ -16,10 +16,13 @@ class GameFactory:
 
     def create_player(self, name=None, id=None):
         self.player = Player(
-            self.game or self.create_game(),
             id or Faker().pystr(),
             name or Faker().pystr()
         )
+
+        self.game or self.create_game()
+        self.game.add_player(self.player)
+
         return self.player
 
     def create_grid(self, cols=5, rows=5, obstacles=(), walls=()):

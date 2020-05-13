@@ -8,14 +8,9 @@ from game.grid import Grid
 from game.player import Player
 
 
-class MyBaseTestCase():
-    # def __init__(self, *args, **kwargs):
-    #     super().__init__(*args, **kwargs)
-    #     self.game = None
-    #     self.player = None
-
-    def create_player(self, game=None):
-        return Player(game or self.create_game(), self.random_string(), self.random_string())
+class MyBaseTestCase:
+    def create_player(self):
+        return Player(self.random_string(), self.random_string())
 
     def create_grid(self, cols=5, rows=5, obstacles=(), walls=()):
         return Grid(cols, rows, list(obstacles), list(walls))
