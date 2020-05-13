@@ -3,8 +3,7 @@ from unittest.mock import patch
 
 import pytest
 
-from game.enums import Direction
-from game.action import ActionType, StepAction
+from game.action import ActionType, StepAction, Direction
 from game.game import GameStatus, NoPlayersError
 from game.grid import Grid
 from game.player import Player

@@ -1,4 +1,4 @@
-from game.enums import Direction
+from game.action import Direction
 from game.character import Character
 
 

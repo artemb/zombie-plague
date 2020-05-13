@@ -1,7 +1,6 @@
 from random import randint, choice
 
-from game.enums import Direction, Step, Turn
-from game.action import ActionType
+from game.action import ActionType, Turn, Direction, Step
 from game.game import Game
 from game.grid import Grid
 from game.grid_def import OBSTACLES, WALLS

@@ -1,4 +1,4 @@
-from game.enums import Direction, Turn, Step
+from game.action import Turn, Direction, Step
 from test.my_base import MyBaseTestCase
 
 

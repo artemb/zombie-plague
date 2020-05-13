@@ -12,14 +12,10 @@ socketio = SocketIO(app, cors_allowed_origins='*')
 mgr = GameManager()
 
 
-# grid = Grid(24, 20, obstacles=OBSTACLES, walls=WALLS)
-# zombie1 = Character("zombie1", grid, (2, 2))
-# zombie_index = 1
-
-@app.after_request
-def add_header(response):
-    response.headers['Access-Control-Allow-Origin'] = '*'
-    return response
+# @app.after_request
+# def add_header(response):
+#     response.headers['Access-Control-Allow-Origin'] = '*'
+#     return response
 
 
 @app.route('/')

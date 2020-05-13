@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import patch
 
-from game.enums import Direction
+from game.action import Direction
 from game.grid import Grid
 from test.my_base import MyBaseTestCase
 

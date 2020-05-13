@@ -2,7 +2,7 @@ import unittest
 from uuid import uuid4
 
 from game.character import Character
-from game.enums import Direction
+from game.action import Direction
 from game.game import Game
 from game.grid import Grid
 from game.player import Player

@@ -1,7 +1,7 @@
 from typing import Tuple
 from uuid import uuid4
 
-from game.enums import Direction, Step, Turn
+from game.action import Turn, Direction, Step
 
 
 class Character():

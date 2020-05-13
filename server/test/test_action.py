@@ -1,8 +1,7 @@
 import pytest
 
-from game.action import ActionType
+from game.action import ActionType, Turn, Direction, Step
 from game.character import Character
-from game.enums import Direction, Step, Turn
 
 
 @pytest.fixture

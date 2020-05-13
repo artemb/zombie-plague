@@ -1,6 +1,6 @@
 import unittest
 
-from game.enums import Direction, Turn
+from game.action import Turn, Direction
 from test.my_base import MyBaseTestCase
 
 
