@@ -3,6 +3,8 @@ from unittest.mock import patch
 
 import pytest
 
+from game.enums import Direction
+from game.action import ActionType, StepAction
 from game.game import GameStatus, NoPlayersError
 from game.grid import Grid
 from game.player import Player
@@ -82,6 +84,13 @@ class TestGame(MyBaseTestCase):
 
         assert 'turn' in state
         assert state['turn'] == expected
+
+    def test_action(self, mocker):
+        char = self.create_character(grid=self.game.grid, address=(2, 2), direction=Direction.DOWN)
+        self.game.add_character(char)
+        mocker.patch.object(StepAction, 'run')
+        self.game.action(char, ActionType.STEP, mock_param='mock_value')
+        ActionType.STEP.action.run.assert_called_once_with(char, mock_param='mock_value')
 
 
 if __name__ == '__main__':

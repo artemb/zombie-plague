@@ -1,5 +1,6 @@
 from enum import Enum
 
+from game.action import ActionType
 from game.turns import TurnManager
 
 
@@ -28,6 +29,10 @@ class Game:
     def add_character(self, character):
         self.characters.add(character)
         self.turn_manager.add_character(character)
+
+    def action(self, char, action_type, **params):
+        if action_type in (ActionType.STEP, ActionType.TURN):
+            action_type.action.run(char, **params)
 
     def state(self):
         state = {

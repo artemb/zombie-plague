@@ -1,6 +1,7 @@
 from random import randint, choice
 
-from game.enums import Direction, Action, Step, Turn
+from game.enums import Direction, Step, Turn
+from game.action import ActionType
 from game.game import Game
 from game.grid import Grid
 from game.grid_def import OBSTACLES, WALLS
@@ -34,15 +35,15 @@ class GameManager:
         if char is None or self.game.turn_manager.current_character_id() != char_id:
             return
 
-        if data['action'] in (Action.STEP_FORWARD.value, Action.STEP_BACKWARD.value):
+        if data['action'] in (ActionType.STEP_FORWARD.value, ActionType.STEP_BACKWARD.value):
             success = char.step(Step(data['action']))  # pylint: disable=no-value-for-parameter
             if not success:
                 return
 
-        if data['action'] == Action.TURN_RIGHT.value:
+        if data['action'] == ActionType.TURN_RIGHT.value:
             char.turn(Turn.RIGHT)
 
-        if data['action'] == Action.TURN_LEFT.value:
+        if data['action'] == ActionType.TURN_LEFT.value:
             char.turn(Turn.LEFT)
 
         self.game.turn_manager.spend_ap()

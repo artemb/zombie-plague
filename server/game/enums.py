@@ -29,13 +29,6 @@ class Direction(Enum):
             return Direction.RIGHT if turn == Turn.LEFT else Direction.LEFT
 
 
-class Action(Enum):
-    STEP_FORWARD = 'FORWARD'
-    STEP_BACKWARD = 'BACKWARD'
-    TURN_LEFT = 'TURN_LEFT'
-    TURN_RIGHT = 'TURN_RIGHT'
-
-
 class Step(Enum):
     FORWARD = 'FORWARD', 1
     BACKWARD = 'BACKWARD', -1
