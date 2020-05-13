@@ -1,0 +1,39 @@
+import pytest
+from faker import Faker
+
+from game.action import Direction, ActionType, Step, Turn
+from game.character import ActionNotAllowedError, Character
+from game.game import Game
+from game.grid import Grid
+from game.player import Player
+
+
+def test_play(game_factory):
+    game = Game(Grid(20, 20))
+
+    player1 = Player(game, Faker().pystr(), Faker().name())
+    player2 = Player(game, Faker().pystr(), Faker().name())
+
+    # char1 = player1.create_character((1, 1), Direction.DOWN, 'char1')
+    # char2 = player2.create_character((1, 2), Direction.UP, 'char2')
+
+    char1 = Character(Faker().pystr())
+    char2 = Character(Faker().pystr())
+
+    game.add_character(char1, player1)
+    game.add_character(char2, player2)
+
+    char1.spawn((1, 1), Direction.DOWN)
+    char2.spawn((1, 2), Direction.UP)
+
+    with pytest.raises(ActionNotAllowedError):
+        game.action(char1, ActionType.STEP, step=Step.FORWARD)
+
+    game.action(char1, ActionType.TURN, turn=Turn.LEFT)
+    game.action(char1, ActionType.STEP, step=Step.FORWARD)
+    game.action(char1, ActionType.STEP, step=Step.FORWARD)
+    game.action(char1, ActionType.TURN, turn=Turn.LEFT)
+
+    assert game.turn_manager.current_character() == char2
+    assert game.characters[char1.char_id].address == (3, 1)
+    assert game.characters[char1.char_id].direction == Direction.UP

@@ -4,7 +4,7 @@ from unittest.mock import patch
 import pytest
 
 from game.action import ActionType, StepAction, Direction, Step
-from game.character import Character
+from game.character import Character, ActionNotAllowedError
 from game.game import GameStatus, NoPlayersError, NotCharactersTurnError, NotEnoughAPError
 from game.grid import Grid
 from game.player import Player
@@ -34,11 +34,12 @@ class TestGame(MyBaseTestCase):
     def test_game_has_turns(self):
         assert self.game.turn_manager is not None
 
-    def test_game_adds_characters_to_turn_manager(self):
-        character = self.create_character()
+    def test_game_adds_characters_to_turn_manager(self, game_factory):
+        player = game_factory.create_player()
+        character = game_factory.create_character()
 
         with patch.object(TurnManager, 'add_character') as mock:
-            self.game.add_character(character)
+            self.game.add_character(character, player)
 
         mock.assert_called_once_with(character)
 
@@ -85,11 +86,13 @@ class TestGame(MyBaseTestCase):
         assert 'turn' in state
         assert state['turn'] == expected
 
-    def test_action(self, mocker):
-        char = self.create_character(grid=self.game.grid, address=(2, 2), direction=Direction.DOWN)
-        self.game.add_character(char)
+    def test_action(self, game_factory, mocker):
+        game = game_factory.create_game()
+        char = game_factory.create_character(address=(2, 2), direction=Direction.DOWN)
         mocker.patch.object(StepAction, 'run')
-        self.game.action(char, ActionType.STEP, mock_param='mock_value')
+
+        game.action(char, ActionType.STEP, mock_param='mock_value')
+
         ActionType.STEP.action.run.assert_called_once_with(char, mock_param='mock_value')
 
     def test_action_controls_turns(self, game_factory, mocker):
@@ -132,9 +135,24 @@ class TestGame(MyBaseTestCase):
         with pytest.raises(NotEnoughAPError):
             game.action(char, ActionType.STEP, step=Step.FORWARD)
 
+    def test_action_checks_possibility(self, game_factory, mocker):
+        game_factory.create_grid(10, 10, obstacles=((1, 2),))
+        game = game_factory.create_game()
+        char = game_factory.create_character(address=(1, 1))
 
+        with pytest.raises(ActionNotAllowedError):
+            game.action(char, ActionType.STEP, step=Step.FORWARD)
 
+    def test_game_add_character(self, game_factory):
+        game = game_factory.create_game()
+        player = game_factory.create_player()
+        char = Character('face')
 
+        game.add_character(char, player)
+
+        assert len(game.characters) == 1
+        assert char.char_id in game.characters
+        assert game.characters[char.char_id] == char
 
 
 
