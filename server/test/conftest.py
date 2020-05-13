@@ -29,8 +29,10 @@ class GameFactory:
 
         self.grid or self.create_grid()
 
-        return Character(player_id, self.grid, face or Faker().pystr(),
-                         address, direction)
+        char = Character(player_id, self.grid, face or Faker().pystr(), address, direction)
+        self.game.add_character(char)
+
+        return char
 
     def create_game(self, grid=None):
         self.game = Game(grid or self.create_grid())

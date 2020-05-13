@@ -15,6 +15,14 @@ class NoPlayersError(Exception):
     pass
 
 
+class NotCharactersTurnError(Exception):
+    pass
+
+
+class NotEnoughAPError(Exception):
+    pass
+
+
 class Game:
     def __init__(self, grid):
         self.grid = grid
@@ -31,8 +39,14 @@ class Game:
         self.turn_manager.add_character(character)
 
     def action(self, char, action_type, **params):
-        if action_type in (ActionType.STEP, ActionType.TURN):
-            action_type.action.run(char, **params)
+        if self.turn_manager.current_character() != char:
+            raise NotCharactersTurnError()
+
+        if self.turn_manager.remaining_ap() < action_type.action.ap:
+            raise NotEnoughAPError()
+
+        action_type.action.run(char, **params)
+        self.turn_manager.spend_ap(action_type.action.ap)
 
     def state(self):
         state = {

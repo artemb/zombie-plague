@@ -3,8 +3,9 @@ from unittest.mock import patch
 
 import pytest
 
-from game.action import ActionType, StepAction, Direction
-from game.game import GameStatus, NoPlayersError
+from game.action import ActionType, StepAction, Direction, Step
+from game.character import Character
+from game.game import GameStatus, NoPlayersError, NotCharactersTurnError, NotEnoughAPError
 from game.grid import Grid
 from game.player import Player
 from game.turns import TurnManager
@@ -90,6 +91,51 @@ class TestGame(MyBaseTestCase):
         mocker.patch.object(StepAction, 'run')
         self.game.action(char, ActionType.STEP, mock_param='mock_value')
         ActionType.STEP.action.run.assert_called_once_with(char, mock_param='mock_value')
+
+    def test_action_controls_turns(self, game_factory, mocker):
+        game = game_factory.create_game()
+        char1 = game_factory.create_character()
+        char2 = game_factory.create_character()
+
+        st = mocker.patch.object(Character, 'step')
+
+        # Testing character who's turn it is
+        game.action(char1, ActionType.STEP, step=Step.FORWARD)
+        st.assert_called_once()
+        st.reset_mock()
+
+        # Testing character who's turn it's not
+        with pytest.raises(NotCharactersTurnError):
+            game.action(char2, ActionType.STEP, step=Step.FORWARD)
+
+        st.assert_not_called()
+
+    def test_action_deducts_ap(self, game_factory, monkeypatch):
+        game = game_factory.create_game()
+        char = game_factory.create_character()
+
+        monkeypatch.setattr(ActionType.STEP.action, 'ap', 3)
+
+        assert game.turn_manager.remaining_ap() == 4
+
+        game.action(char, ActionType.STEP, step=Step.FORWARD)
+        assert game.turn_manager.remaining_ap() == 1
+
+    def test_action_checks_remaining_ap(self, game_factory, monkeypatch):
+        game = game_factory.create_game()
+        char = game_factory.create_character()
+
+        monkeypatch.setattr(ActionType.STEP.action, 'ap', 5)
+
+        assert game.turn_manager.remaining_ap() == 4
+
+        with pytest.raises(NotEnoughAPError):
+            game.action(char, ActionType.STEP, step=Step.FORWARD)
+
+
+
+
+
 
 
 if __name__ == '__main__':

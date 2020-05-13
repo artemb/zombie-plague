@@ -22,8 +22,8 @@ class TurnManager:
     def remaining_ap(self):
         return self.current_turn_ap
 
-    def spend_ap(self):
-        self.current_turn_ap -= 1
+    def spend_ap(self, ap=1):
+        self.current_turn_ap -= ap
         if self.current_turn_ap <= 0:
             self.end_turn()
 
