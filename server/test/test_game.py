@@ -2,10 +2,12 @@ import unittest
 from unittest.mock import patch
 
 import pytest
+from faker import Faker
 
 from game.action import ActionType, StepAction, Direction, Step
 from game.character import Character, ActionNotAllowedError
-from game.game import GameStatus, NoPlayersError, NotCharactersTurnError, NotEnoughAPError
+from game.game import GameStatus, NoPlayersError, NotCharactersTurnError, NotEnoughAPError, UnknownPlayerError, \
+    UnknownCharacterError
 from game.grid import Grid
 from game.player import Player
 from game.turns import TurnManager
@@ -154,7 +156,26 @@ class TestGame(MyBaseTestCase):
         assert char.char_id in game.characters
         assert game.characters[char.char_id] == char
 
+    def test_get_char(self, game_factory, monkeypatch):
+        char_id = Faker().pystr()
+        char = Faker().pydict()
+        game = game_factory.create_game()
 
+        monkeypatch.setattr(game, 'characters', {char_id: char})
 
-if __name__ == '__main__':
-    unittest.main()
+        assert game.get_character(char_id) == char
+
+        with pytest.raises(UnknownCharacterError):
+            game.get_character(Faker().pystr())
+
+    def test_get_player(self, game_factory, monkeypatch):
+        player_id = Faker().pystr()
+        player = Faker().pydict()
+        game = game_factory.create_game()
+        monkeypatch.setattr(game, 'players', {player_id: player})
+
+        assert game.get_player(player_id) == player
+
+        with pytest.raises(UnknownPlayerError):
+            game.get_player(Faker().pystr())
+

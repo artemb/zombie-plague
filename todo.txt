@@ -7,7 +7,9 @@
 + Move state from game manager to game.
 + Add Action class to control actions within the game
 + Create a test to play a whole game using just the Game class
-- Remove game logic from game manager and write a test for it
++ Add get_by_id methods for players and characters to the game class
++ Remove game logic from game manager and write a test for it
+- Remove the MyTestBase class
 - Update client to the new API
 
 0.3

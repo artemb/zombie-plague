@@ -21,6 +21,12 @@ class NotCharactersTurnError(Exception):
 class NotEnoughAPError(Exception):
     pass
 
+class UnknownPlayerError(Exception):
+    pass
+
+class UnknownCharacterError(Exception):
+    pass
+
 
 class Game:
     def __init__(self, grid):
@@ -33,10 +39,22 @@ class Game:
     def add_player(self, player):
         self.players[player.id] = player
 
+    def get_player(self, player_id):
+        if player_id not in self.players:
+            raise UnknownPlayerError()
+
+        return self.players[player_id]
+
     def add_character(self, character, player):
         self.characters[character.char_id] = character
         character.attach_to_player(player.id, self.grid)
         self.turn_manager.add_character(character)
+
+    def get_character(self, char_id):
+        if char_id not in self.characters:
+            raise UnknownCharacterError
+
+        return self.characters[char_id]
 
     def action(self, char, action_type, **params):
         if self.turn_manager.current_character() != char:

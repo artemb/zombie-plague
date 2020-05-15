@@ -2,7 +2,7 @@ from random import randint, choice
 
 from game.action import ActionType, Turn, Direction, Step
 from game.character import Character
-from game.game import Game
+from game.game import Game, UnknownPlayerError
 from game.grid import Grid
 from game.grid_def import OBSTACLES, WALLS
 from game.player import Player
@@ -24,26 +24,23 @@ class GameManager:
         char.spawn((randint(1, 24), randint(1, 20)), choice(list(Direction)))
 
     def is_player_registered(self, player_id):
-        return player_id in self.game.players.keys()
+        try:
+            self.game.get_player(player_id)
+            return True
 
-    def action(self, char_id, data):
-        # Checking if it is the player's turn
-        char = self.game.characters[char_id]
-        if char is None or self.game.turn_manager.current_character_id() != char_id:
-            return
+        except UnknownPlayerError:
+            return False
 
-        if data['action'] in (ActionType.STEP_FORWARD.value, ActionType.STEP_BACKWARD.value):
-            success = char.step(Step(data['action']))  # pylint: disable=no-value-for-parameter
-            if not success:
-                return
+    def action(self, char_id, action_type, params):
+        char = self.game.get_character(char_id)
 
-        if data['action'] == ActionType.TURN_RIGHT.value:
-            char.turn(Turn.RIGHT)
+        if 'step' in params:
+            params['step'] = Step[params['step']]
 
-        if data['action'] == ActionType.TURN_LEFT.value:
-            char.turn(Turn.LEFT)
+        if 'turn' in params:
+            params['turn'] = Turn[params['turn']]
 
-        self.game.turn_manager.spend_ap()
+        self.game.action(char, ActionType[action_type], **params)
 
     def state(self):
         return self.game.state()
