@@ -10,6 +10,7 @@
 + Add get_by_id methods for players and characters to the game class
 + Remove game logic from game manager and write a test for it
 - Remove the MyTestBase class
+- update app.py and write tests for it
 - Update client to the new API
 
 0.3

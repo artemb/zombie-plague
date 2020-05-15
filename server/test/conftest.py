@@ -9,15 +9,16 @@ from game.player import Player
 
 
 class GameFactory:
-    def __init__(self):
+    def __init__(self, faker):
         self.grid = None
         self.game = None
         self.player = None
+        self.faker = faker
 
     def create_player(self, name=None, id=None):
         self.player = Player(
-            id or Faker().pystr(),
-            name or Faker().pystr()
+            id or self.faker.pystr(),
+            name or self.faker.pystr()
         )
 
         self.game or self.create_game()
@@ -36,7 +37,7 @@ class GameFactory:
 
         self.game or self.create_game()
 
-        char = Character(face or Faker().pystr())
+        char = Character(face or self.faker.pystr())
         self.game.add_character(char, player)
         char.spawn(address, direction)
 
@@ -49,5 +50,10 @@ class GameFactory:
 
 
 @pytest.fixture
-def game_factory():
-    return GameFactory()
+def game_factory(faker):
+    return GameFactory(faker)
+
+
+@pytest.fixture(scope="session")
+def faker():
+    return Faker()
