@@ -5,20 +5,13 @@ from flask_socketio import SocketIO, send, emit
 
 from game.game_manager import GameManager
 
-app: Flask = Flask(__name__)
-app.config['SECRET_KEY'] = 'Ajdjeu234Jfjsd!lsd@#@33jA'
-socketio = SocketIO(app, cors_allowed_origins='*')
+zombie_app: Flask = Flask(__name__)
+zombie_app.config['SECRET_KEY'] = 'Ajdjeu234Jfjsd!lsd@#@33jA'
+socketio = SocketIO(zombie_app, cors_allowed_origins='*')
 
 mgr = GameManager()
 
-
-# @app.after_request
-# def add_header(response):
-#     response.headers['Access-Control-Allow-Origin'] = '*'
-#     return response
-
-
-@app.route('/')
+@zombie_app.route('/')
 def index():
     return render_template('index.html')
 
@@ -30,7 +23,7 @@ def check_registration(data):
     if is_registered:
         session['player_id'] = player_id
 
-    app.logger.info(f"Registration check for {player_id} returned {is_registered}")
+    zombie_app.logger.info(f"Registration check for {player_id} returned {is_registered}")
     emit('registration_check', {'registered': is_registered})
 
 
@@ -40,20 +33,20 @@ def register(data):
     player_name = data['username']
     session['player_id'] = player_id
     mgr.register_player(player_id, player_name)
-    app.logger.info(f"Registered {player_name} at {player_id}")  # pylint: disable=no-member
+    zombie_app.logger.info(f"Registered {player_name} at {player_id}")  # pylint: disable=no-member
 
     emit('joined', {'player_id': player_id})
 
 
 @socketio.on('update')
 def on_update(data):
-    app.logger.info(  # pylint: disable=no-member
+    zombie_app.logger.info(  # pylint: disable=no-member
         f"State update from {session['player_id']} request with {data}")
 
     if data['action'] is not None:
         mgr.action(data['character'], data)
 
-    app.logger.info(
+    zombie_app.logger.info(
         f"Sending state {mgr.state()}"
     )
 
@@ -61,4 +54,5 @@ def on_update(data):
 
 
 if __name__ == '__main__':
-    socketio.run(app, debug=True, host='0.0.0.0')
+    mgr = GameManager()
+    socketio.run(zombie_app, debug=True, host='0.0.0.0')
