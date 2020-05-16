@@ -1,11 +1,20 @@
 import Phaser from 'phaser';
 import SocketIOClient from 'socket.io-client'
 
+export enum GameStatus {
+    LOBBY = "LOBBY",
+    STARTED = "STARTED",
+    FINISHED = "FINISHED",
+    ABSENT = "ABSENT"
+}
+
 export default class StateManager extends Phaser.Events. EventEmitter {
     private socket: SocketIOClient.Socket;
     playerId: string;
     characters: object;
     turn: object;
+    players: object;
+    game: object;
 
     constructor(socket) {
         super();
@@ -47,14 +56,6 @@ export default class StateManager extends Phaser.Events. EventEmitter {
         this.socket.emit('update', { character, action });
     }
 
-    // isOurTurn() {
-    //     return this.isPlayersTurn(this.playerId);
-    // }
-
-    // isPlayersTurn(playerId) {
-    //     return this.turn['activePlayer'] == playerId;
-    // }
-
     isCharactersTurn(characterId) {
         return this.turn['activeCharacter'] == characterId;
     }
@@ -62,6 +63,9 @@ export default class StateManager extends Phaser.Events. EventEmitter {
     private onServerUpdate(data) {
         this.characters = data['grid']['characters'];
         this.turn = data['turn'];
+        this.players = data['players'];
+        this.game = data['game'];
+
         this.emit('gamestatechange', this);
     }
 }

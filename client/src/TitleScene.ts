@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import StateManager from "./components/StateManager";
+import UIButton from "./components/UIButton";
 
 export default class TitleScene extends Phaser.Scene {
     private errorText: Phaser.GameObjects.Text;
@@ -18,7 +19,7 @@ export default class TitleScene extends Phaser.Scene {
         this.createCenteredText('What is your name', 350, 20);
         this.errorText = this.createCenteredText('C\'mon, I really need your name', 500, 16).setVisible(false);
         this.usernameField = this.createUsernameField(this.scale.width / 2, 450);
-        this.createButton(this.scale.width / 2, 550, 'Start game',() => {this.onStartClick()});
+        new UIButton(this, this.scale.width / 2, 550, 'Start game', () => this.onStartClick());
     }
 
     checkIfRegistered() {
@@ -40,7 +41,7 @@ export default class TitleScene extends Phaser.Scene {
             return;
         }
         this.stateManager.registerPlayer(username).then(() => {
-            this.scene.start('Board');
+            this.scene.start('Lobby');
         });
     }
 
@@ -60,22 +61,5 @@ export default class TitleScene extends Phaser.Scene {
             "fontSize": `${fontSize}px`,
             "color": '#FFF'
         }).setOrigin(.5, .5);
-    }
-
-    createButton(x: number, y: number, txt: string, onClick: Function) {
-        const btn_img = this.add.image(x, y, 'ui-button', 'blue_button00.png');
-        btn_img.setInteractive();
-
-        const btn_label = this.add.text(0, 0, txt, {"fontSize": '18px', 'color': '#FFF', 'align': 'center'});
-        Phaser.Display.Align.In.Center(btn_label, btn_img);
-
-        btn_img.on('pointerdown', onClick);
-
-        btn_img.on('pointerover', () => {
-            btn_img.setFrame('blue_button02.png');
-        });
-        btn_img.on('pointerout', () => {
-            btn_img.setFrame('blue_button00.png');
-        })
     }
 }
