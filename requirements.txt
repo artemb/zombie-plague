@@ -1,11 +1,11 @@
-astroid==2.4.0
+astroid==2.4.1
 atomicwrites==1.4.0
 attrs==19.3.0
 click==7.1.2
 colorama==0.4.3
 dnspython==1.16.0
 eventlet==0.25.2
-Faker==4.0.3
+Faker==4.1.0
 Flask==1.1.2
 Flask-SocketIO==4.3.0
 greenlet==0.4.15
