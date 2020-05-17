@@ -41,7 +41,7 @@ export default class TitleScene extends Phaser.Scene {
             return;
         }
         this.stateManager.registerPlayer(username).then(() => {
-            this.scene.start('Lobby');
+            this.scene.start('Board');
         });
     }
 

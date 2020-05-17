@@ -8,6 +8,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {
+    "parcel": "^1.12.4",
     "@types/socket.io-client": "^1.4.32",
     "@types/node": "^13.13.4",
     "minimist": ">=1.2.2",

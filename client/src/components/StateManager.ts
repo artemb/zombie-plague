@@ -52,8 +52,8 @@ export default class StateManager extends Phaser.Events. EventEmitter {
         });
     }
 
-    update(character: string = null, action: string = null) {
-        this.socket.emit('update', { character, action });
+    update(character: string = null, action: string = null, params: object = {}) {
+        this.socket.emit('update', { character, action, params });
     }
 
     isCharactersTurn(characterId) {

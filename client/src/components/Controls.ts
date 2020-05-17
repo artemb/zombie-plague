@@ -8,6 +8,18 @@ enum Action {
   BACKWARD = "BACKWARD",
   LEFT = "TURN_LEFT",
   RIGHT = "TURN_RIGHT",
+  STEP = "STEP",
+  TURN = "TURN"
+}
+
+enum Step {
+  FORWARD = "FORWARD",
+  BACKWARD = "BACKWARD"
+}
+
+enum Turn {
+  LEFT = "LEFT",
+  RIGHT = "RIGHT"
 }
 
 export default class Controls extends Phaser.GameObjects.Container {
@@ -55,28 +67,29 @@ export default class Controls extends Phaser.GameObjects.Container {
   drawControls(character) {
     this.btn_group = this.scene.add.group();
     let btn = this.create_button(50, 150, 1, () =>
-        this.sendUpdate(character, Action.LEFT)
+        this.sendUpdate(character, Action.TURN, {turn: Turn.LEFT})
     );
     this.btn_group.add(btn);
 
     btn = this.create_button(120, 150, 4, () =>
-        this.sendUpdate(character, Action.RIGHT)
+        this.sendUpdate(character, Action.TURN, {turn: Turn.RIGHT})
     );
     this.btn_group.add(btn);
 
     btn = this.create_button(50, 220, 2, () =>
-        this.sendUpdate(character, Action.FORWARD)
+        this.sendUpdate(character, Action.STEP, {step: Step.FORWARD})
     );
     this.btn_group.add(btn);
 
     btn = this.create_button(120, 220, 3, () =>
-        this.sendUpdate(character, Action.BACKWARD)
+        this.sendUpdate(character, Action.STEP, {step: Step.BACKWARD})
     );
     this.btn_group.add(btn);
+
   }
 
-  sendUpdate(character: Character, action: Action) {
-    this.stateManager.update(character.char_id, action);
+  sendUpdate(character: Character, action: Action, params: object = {}) {
+    this.stateManager.update(character.char_id, action, params);
   }
 
   create_button(x: integer, y: integer, frame: integer, onPointerDown: Function) {
