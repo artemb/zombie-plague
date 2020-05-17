@@ -45,5 +45,5 @@ class GameServerAPI(Namespace):
             f"Sending state {self.mgr.state()}"
         )
 
-        self.send(self.mgr.state())
+        self.send(self.mgr.state(), broadcast=True)
 

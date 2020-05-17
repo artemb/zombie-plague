@@ -54,7 +54,7 @@ def test_on_update_no_action(api, faker):
     api.on_update({'action': None})
 
     api.mgr.state.assert_called()
-    api.send.assert_called_once_with(state)
+    api.send.assert_called_once_with(state, broadcast=True)
 
 
 def test_on_update_action(api, faker):
@@ -70,4 +70,4 @@ def test_on_update_action(api, faker):
     api.on_update(data)
 
     api.mgr.action.assert_called_once_with(character, action, params)
-    api.send.assert_called_once_with(state)
+    api.send.assert_called_once_with(state, broadcast=True)
