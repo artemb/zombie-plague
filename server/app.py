@@ -10,7 +10,7 @@ zombie_app: Flask = Flask(__name__)
 zombie_app.config['SECRET_KEY'] = 'Ajdjeu234Jfjsd!lsd@#@33jA'
 socketio = SocketIO(zombie_app, cors_allowed_origins='*')
 
-api = GameServerAPI(GameManager(), session, emit, zombie_app.logger)
+api = GameServerAPI(GameManager(), session, emit, send, zombie_app.logger)
 
 socketio.on_namespace(api)
 

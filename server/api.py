@@ -35,7 +35,11 @@ class GameServerAPI(Namespace):
             f"State update from {self.session['player_id']} request with {data}")
 
         if data['action'] is not None:
-            self.mgr.action(data['character'], data['action'], data)
+            params = {}
+            if 'params' in data:
+                params = data['params']
+
+            self.mgr.action(data['character'], data['action'], params)
 
         self.logger.info(
             f"Sending state {self.mgr.state()}"

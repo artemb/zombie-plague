@@ -64,8 +64,10 @@ def test_on_update_action(api, faker):
 
     action = faker.pystr()
     character = faker.pystr()
-    data = {'action': action, 'character': character, 'foo': 'bar'}
+    params = faker.pydict()
+    data = {'action': action, 'character': character, 'params': params}
+
     api.on_update(data)
 
-    api.mgr.action.assert_called_once_with(character, action, data)
+    api.mgr.action.assert_called_once_with(character, action, params)
     api.send.assert_called_once_with(state)

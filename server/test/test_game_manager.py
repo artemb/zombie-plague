@@ -3,6 +3,7 @@ from unittest.mock import patch
 import pytest
 
 from game.action import Step, ActionType
+from game.character import ActionNotAllowedError
 from game.game import Game
 from game.game_manager import GameManager
 
@@ -43,6 +44,16 @@ def test_action(mgr, mocker, monkeypatch, faker):
     mocker.patch.object(Game, 'action')
     mgr.action(char_id, 'STEP', {'step': 'FORWARD'})
     Game.action.assert_called_once_with(char, ActionType.STEP, step=Step.FORWARD)
+
+
+def test_action_not_allowed(mgr, mocker, monkeypatch, faker):
+    char_id = faker.pystr()
+    char = faker.pydict()
+    monkeypatch.setattr(mgr.game, 'characters', {char_id: char})
+    mocker.patch.object(Game, 'action', side_effect=ActionNotAllowedError)
+
+    mgr.action(char_id, 'STEP', {'step': 'FORWARD'})
+    # Will pass if no exception was raised
 
 
 def test_state(game_factory, faker):

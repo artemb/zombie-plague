@@ -1,7 +1,7 @@
 from random import randint, choice
 
 from game.action import ActionType, Turn, Direction, Step
-from game.character import Character
+from game.character import Character, ActionNotAllowedError
 from game.game import Game, UnknownPlayerError
 from game.grid import Grid
 from game.grid_def import OBSTACLES, WALLS
@@ -40,7 +40,10 @@ class GameManager:
         if 'turn' in params:
             params['turn'] = Turn[params['turn']]
 
-        self.game.action(char, ActionType[action_type], **params)
+        try:
+            self.game.action(char, ActionType[action_type], **params)
+        except ActionNotAllowedError:
+            pass
 
     def state(self):
         return self.game.state()
