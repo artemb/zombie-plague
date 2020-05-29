@@ -2,7 +2,7 @@ from random import randint, choice
 
 from game.action import ActionType, Turn, Direction, Step
 from game.character import Character, ActionNotAllowedError
-from game.game import Game, UnknownPlayerError
+from game.game import Game, UnknownPlayerError, Lobby, GameStartedError
 from game.grid import Grid
 from game.grid_def import OBSTACLES, WALLS
 from game.player import Player
@@ -12,20 +12,24 @@ class GameManager:
     def __init__(self):
         grid = Grid(24, 20, obstacles=OBSTACLES, walls=WALLS)
         self.char_faces = ['char1', 'char2', 'char3', 'char4']
-        self.game = Game(grid)
+        self.lobby = Lobby()
+        self.game = None
 
     def register_player(self, id: str, name: str):
+        if self.game is not None:
+            raise GameStartedError()
+
         player = Player(id, name)
-        self.game.add_player(player)
+        self.lobby.register_player(player)
 
-        char = Character(self.char_faces.pop())
-        self.game.add_character(char, player)
-
-        char.spawn((randint(1, 24), randint(1, 20)), choice(list(Direction)))
+        # char = Character(self.char_faces.pop())
+        # self.game.add_character(char, player)
+        #
+        # char.spawn((randint(1, 24), randint(1, 20)), choice(list(Direction)))
 
     def is_player_registered(self, player_id):
         try:
-            self.game.get_player(player_id)
+            (self.game or self.lobby).get_player(player_id)
             return True
 
         except UnknownPlayerError:

@@ -5,7 +5,7 @@ from game.turns import TurnManager
 
 @pytest.fixture
 def tm():
-    return TurnManager(4)
+    return TurnManager(4, [])
 
 
 @pytest.fixture
@@ -20,6 +20,14 @@ def char2(tm, game_factory):
     char = game_factory.create_character()
     tm.add_character(char)
     return char
+
+
+def test_init(faker):
+    chars = faker.pylist()
+    tm = TurnManager(5, chars)
+    assert tm.max_ap == 5
+    assert tm.characters == chars
+    assert tm.active_character_index == 0
 
 
 def test_turns(tm, char1, char2):

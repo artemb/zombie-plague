@@ -1,6 +1,6 @@
 class TurnManager:
-    def __init__(self, max_ap):
-        self.characters = []
+    def __init__(self, max_ap, characters):
+        self.characters = characters
         self.max_ap = max_ap
         self.active_character_index = 0
         self.current_turn_ap = max_ap

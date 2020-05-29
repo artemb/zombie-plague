@@ -17,12 +17,13 @@ class Character():
         self.direction = None
         self.face = face
 
-    def attach_to_player(self, player_id, grid):
-        self.grid = grid
-        self.grid.add_character(self)
+    def attach_to_player(self, player_id):
         self.player_id = player_id
 
-    def spawn(self, address, direction):
+    def spawn(self, grid, address, direction):
+        self.grid = grid
+        grid.add_character(self)
+
         self.address = address
         self.direction = direction
 

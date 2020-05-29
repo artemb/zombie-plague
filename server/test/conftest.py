@@ -1,3 +1,5 @@
+from unittest.mock import Mock
+
 import pytest
 from faker import Faker
 
@@ -22,7 +24,7 @@ class GameFactory:
         )
 
         self.game or self.create_game()
-        self.game.add_player(self.player)
+        self.game.players[self.player.id] = self.player
 
         return self.player
 
@@ -38,14 +40,16 @@ class GameFactory:
         self.game or self.create_game()
 
         char = Character(face or self.faker.pystr())
-        self.game.add_character(char, player)
-        char.spawn(address, direction)
+        char.attach_to_player(player)
+        self.game.characters[char.char_id] = char
+        self.game.turn_manager.characters.append(char)
+        char.spawn(self.grid, address, direction)
 
         return char
 
     def create_game(self, grid=None):
         grid or self.grid or self.create_grid()
-        self.game = Game(grid or self.grid)
+        self.game = Game(grid or self.grid, {}, {})
         return self.game
 
 
@@ -54,6 +58,39 @@ def game_factory(faker):
     return GameFactory(faker)
 
 
+class GameFaker:
+    def __init__(self, monkeypatch, faker):
+        self.monkeypatch = monkeypatch
+        self.faker = faker
+
+    def grid(self):
+        return Mock()
+
+    def player(self, game=None):
+        player = Mock(id=self.faker.pystr())
+        if game is not None:
+            game.players[player.id] = player
+        return player
+
+    def character(self, game=None):
+        char = Mock(char_id=self.faker.pystr())
+        if game is not None:
+            game.characters[char.id] = char
+            game.turn_manager.characters.append(char)
+        return char
+
+    def turn_manager(self, char=None, remaining_ap=4):
+        tm = Mock()
+        tm.current_character.return_value = char
+        tm.remaining_ap.return_value = remaining_ap
+        return tm
+
+
 @pytest.fixture(scope="session")
 def faker():
     return Faker()
+
+
+@pytest.fixture
+def game_faker(monkeypatch, faker):
+    return GameFaker(monkeypatch, faker)

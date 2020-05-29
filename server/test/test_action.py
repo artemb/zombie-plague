@@ -16,6 +16,7 @@ def test_step(char, step):
     ActionType.STEP.action.run(char, step=step)
     Character.step.assert_called_once_with(step)
 
+
 @pytest.mark.parametrize(('turn'), ((Turn.LEFT), (Turn.RIGHT)))
 def test_turn_left(char, turn):
     ActionType.TURN.action.run(char, turn=turn)
