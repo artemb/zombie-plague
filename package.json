@@ -8,7 +8,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {
-    "parcel": "^1.12.4",
+    "parcel": "^2.8.2",
     "@types/socket.io-client": "^1.4.32",
     "@types/node": "^13.13.4",
     "minimist": ">=1.2.2",
@@ -18,7 +18,7 @@
   },
   "dependencies": {
     "bulma": "^0.8.2",
-    "phaser": "^3.22.0",
+    "phaser": "^3.55.2",
     "phaser3-rex-plugins": "^1.1.14",
     "socket.io-client": "^2.3.0"
   },
